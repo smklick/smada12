@@ -76,6 +76,11 @@ import android.support.annotation.NonNull;
     public void setAssFactor(int assFactor) {
         this.assFactor = assFactor;
     }
+
+    public String toString() {
+        String s = firstName + " \"" + smashName + "\" " + lastName;
+        return s;
+    }
 }
 
 
