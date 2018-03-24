@@ -66,6 +66,12 @@ public class PlayerRepository implements IPlayerDataSource {
     }
 
     @Override
+    public void clearTable() { mLocalDataSource.clearTable(); }
+
+    @Override
+    public void deleteUser(int id) { mLocalDataSource.deleteUser(id); }
+
+    @Override
     public void deleteUsersByName(String badName) {
         mLocalDataSource.deleteUsersByName(badName);
     }
@@ -74,4 +80,7 @@ public class PlayerRepository implements IPlayerDataSource {
     public void insertOrReplaceUsers(Player... players) {
         mLocalDataSource.insertOrReplaceUsers(players);
     }
+
+    @Override
+    public int updatePlayer(Player player) { return mLocalDataSource.updatePlayer(player); }
 }

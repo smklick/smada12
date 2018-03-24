@@ -73,7 +73,16 @@ public class PlayerDataSource implements IPlayerDataSource {
     }
 
     @Override
+    public void clearTable() { playerDao.clearTable(); }
+
+    @Override
+    public void deleteUser(int id) { playerDao.deleteUser(id); }
+
+    @Override
     public void insertOrReplaceUsers(Player... players) {
         playerDao.insertOrReplaceUsers(players);
     }
+
+    @Override
+    public int updatePlayer(Player player) { return playerDao.updatePlayer(player); }
 }

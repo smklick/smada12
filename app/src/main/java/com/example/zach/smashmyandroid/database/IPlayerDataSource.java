@@ -35,5 +35,11 @@ public interface IPlayerDataSource {
 
     void deleteUsersByName(String badName);
 
+    void clearTable();
+
+    void deleteUser(int id);
+
     void insertOrReplaceUsers(Player... players);
+
+    int updatePlayer(Player player);
 }
