@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         loadData();
 
+        // Floating action button adds a user to the list. Currently cannot edit initial player details.
         addPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,15 +104,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Single press on a list item retrieves the object from the list and makes a Toast message with First/Last name
         lvPlayers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
-                //Make intent and pass to edit user activity.
+
+                Player p = (Player) lvPlayers.getItemAtPosition(position);
+                Toast.makeText(MainActivity.this, "Clicked: " + p.getFirstName() + " " + p.getLastName(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
 
+    // Retrieves all users from memory
     private void loadData() {
         Disposable disposable = playerRepository.loadAllUsers()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -141,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    // Clicking the clear button deletes all users from the list
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -152,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Method for deleting all users from list
     private void deleteAllUsers() {
         Disposable disposable = io.reactivex.Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
@@ -182,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable.add(disposable);
     }
 
+    // Long press on list item creates an options menu with UPDATE or DELETE options
     @Override
     public void onCreateContextMenu(ContextMenu menu,View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -192,26 +201,35 @@ public class MainActivity extends AppCompatActivity {
         menu.add(Menu.NONE, 1, menu.NONE, "DELETE");
     }
 
+    // Selecting UPDATE or DELETE fires the appropriate event
+    // UPDATE currently only allows changing of first name
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         final Player player = playersList.get(info.position);
         switch (item.getItemId()) {
-            case 0:
+            case 0: // Update User
             {
-                final EditText editName = new EditText(MainActivity.this);
-                editName.setText(player.getFirstName());
+                LinearLayout editPlayerDetailsView = new LinearLayout(MainActivity.this);
+                editPlayerDetailsView.setOrientation(LinearLayout.VERTICAL);
+
+                final EditText editFirstName = new EditText(MainActivity.this);
+
+                editFirstName.setText(player.getFirstName());
+
+                //Intent i = new Intent(MainActivity.this, EditUser.class);
+
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle("Edit")
-                        .setMessage("Edit User Name")
-                        .setView(editName)
+                        .setMessage("Edit User")
+                        .setView(editFirstName)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if(TextUtils.isEmpty(editName.getText().toString()))
+                                if(TextUtils.isEmpty(editFirstName.getText().toString()))
                                     return;
                                 else {
-                                    player.setFirstName(editName.getText().toString());
+                                    player.setFirstName(editFirstName.getText().toString());
                                     updatePlayer(player);
                                 }
                             }
@@ -223,7 +241,8 @@ public class MainActivity extends AppCompatActivity {
                 }).create().show();
             }
             break;
-            case 1: {
+            case 1: // Delete User
+                {
                 new AlertDialog.Builder(MainActivity.this)
                         .setMessage("Do you want to delete "+ player.getFirstName() + " " + player.getLastName())
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -273,6 +292,7 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable.add(disposable);
     }
 
+    // Replaces the Player object in memory with the new one
     private void updatePlayer(final Player player) {
         Disposable disposable = io.reactivex.Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
