@@ -109,8 +109,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                // Create player object from list data
                 Player p = (Player) lvPlayers.getItemAtPosition(position);
-                Toast.makeText(MainActivity.this, "Clicked: " + p.getFirstName() + " " + p.getLastName(), Toast.LENGTH_SHORT).show();
+
+                // Create a PlayerData parcel
+                //PlayerData data = new PlayerData(p.getFirstName(), p.getLastName(), p.getSmashName(), p.getRank());
+
+                // Add PlayerData parcel to new intent
+                Intent i = new Intent(MainActivity.this, PlayerDetails.class).putExtra("player", p);
+
+                // Start new activity with intent containing player data
+                startActivity(i);
 
             }
         });

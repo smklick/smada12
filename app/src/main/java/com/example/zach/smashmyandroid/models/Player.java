@@ -3,6 +3,8 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.Entity;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 
@@ -11,7 +13,7 @@ import android.support.annotation.NonNull;
  */
 
     @Entity(indices = {@Index("id")}, tableName="Players")
-    public class Player {
+    public class Player implements Parcelable {
 
     @NonNull
     @ColumnInfo(name="id")
@@ -27,16 +29,46 @@ import android.support.annotation.NonNull;
     @ColumnInfo(name="smashName")
     private String smashName;
 
-    @ColumnInfo(name="assFactor")
-    private int assFactor;
+    @ColumnInfo(name="rank")
+    private int rank;
 
 
-    public Player(String firstName, String lastName, String smashName, int assFactor) {
+    public Player(String firstName, String lastName, String smashName, int rank) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.smashName = smashName;
-        this.assFactor = assFactor;
+        this.rank = rank;
     }
+
+    public Player(Parcel p) {
+        this.firstName = p.readString();
+        this.lastName = p.readString();
+        this.smashName = p.readString();
+        this.rank = p.readInt();
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator(){
+        public Player createFromParcel(Parcel p){
+            return new Player(p);
+        }
+        public Player[] newArray(int size) {
+            return new Player[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.firstName);
+        dest.writeString(this.lastName);
+        dest.writeString(this.smashName);
+        dest.writeInt(this.rank);
+    }
+
     public int getId() {
         return id;
     }
@@ -69,12 +101,12 @@ import android.support.annotation.NonNull;
         this.smashName = smashName;
     }
 
-    public int getAssFactor() {
-        return assFactor;
+    public int getRank() {
+        return rank;
     }
 
-    public void setAssFactor(int assFactor) {
-        this.assFactor = assFactor;
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     public String toString() {

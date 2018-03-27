@@ -35,10 +35,10 @@ public interface PlayerDao {
     @Query("select * from Players where smashName = :smashName")
     Flowable<Player> loadUserBySmashName(String smashName);
 
-    @Query("select * from Players where assFactor >= :rank")
+    @Query("select * from Players where rank >= :rank")
     Flowable<List<Player>> findRankGreaterThan(int rank);
 
-    @Query("select * from Players where assFactor <= :rank")
+    @Query("select * from Players where rank <= :rank")
     Flowable<List<Player>> findRankLessThan(int rank);
 
     @Insert(onConflict = IGNORE)
