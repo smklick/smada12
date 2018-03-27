@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private ListView lvPlayers;
     private FloatingActionButton addPlayer;
 
+    static final int EDIT_USER = 1;
+
     List<Player> playersList = new ArrayList<>();
     ArrayAdapter adapter;
 
@@ -119,10 +121,21 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(MainActivity.this, PlayerDetails.class).putExtra("player", p);
 
                 // Start new activity with intent containing player data
-                startActivity(i);
+                startActivityForResult(i, EDIT_USER);
 
             }
         });
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == EDIT_USER) {
+            if(resultCode == RESULT_OK) {
+                Player p = data.getParcelableExtra("player");
+                Toast.makeText(this, "Activity Result Recieved: id: " + p.getId() + " " + p.getFirstName() + " " + p.getLastName(), Toast.LENGTH_SHORT).show();
+                updatePlayer(p);
+                loadData();
+            }
+        }
     }
 
     // Retrieves all users from memory

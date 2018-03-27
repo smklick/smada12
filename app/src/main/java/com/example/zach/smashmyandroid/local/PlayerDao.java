@@ -17,6 +17,9 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 /**
  * Created by Zach on 3/19/2018.
+ * Data Access Object for Player.
+ * Defines actions that can be performed with Player table in PlayerDatabase
+ *
  */
 
 @Dao
@@ -62,5 +65,6 @@ public interface PlayerDao {
 
     @Update(onConflict = REPLACE)
     int updatePlayer(Player player);
+
 }
 

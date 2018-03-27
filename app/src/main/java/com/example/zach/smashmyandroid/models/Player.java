@@ -41,6 +41,7 @@ import android.support.annotation.NonNull;
     }
 
     public Player(Parcel p) {
+        this.id = p.readInt();
         this.firstName = p.readString();
         this.lastName = p.readString();
         this.smashName = p.readString();
@@ -63,6 +64,7 @@ import android.support.annotation.NonNull;
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
         dest.writeString(this.firstName);
         dest.writeString(this.lastName);
         dest.writeString(this.smashName);
@@ -110,7 +112,7 @@ import android.support.annotation.NonNull;
     }
 
     public String toString() {
-        String s = firstName + " \"" + smashName + "\" " + lastName;
+        String s = id + ": " +firstName + " \"" + smashName + "\" " + lastName;
         return s;
     }
 }
