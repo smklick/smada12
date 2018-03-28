@@ -36,6 +36,9 @@ public class NewPlayer extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // If all fields are populated, create a new Player object using the entered data
+                // and return it to the original activity
                 if(firstName.getText() != null
                         && lastName.getText() != null
                         && smashName.getText() != null
@@ -44,7 +47,9 @@ public class NewPlayer extends AppCompatActivity {
                     final Player p = new Player(firstName.getText().toString(), lastName.getText().toString(), smashName.getText().toString(), Integer.parseInt(rank.getText().toString()));
 
                     Intent i = new Intent(NewPlayer.this, MainActivity.class).putExtra("player", p);
+
                     setResult(RESULT_OK, i);
+
                 } else {
                     Toast.makeText(NewPlayer.this, "All fields are required", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_CANCELED);

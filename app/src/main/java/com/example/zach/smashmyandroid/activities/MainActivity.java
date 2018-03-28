@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Handlers for various activities that can be launched from this activity.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == EDIT_USER) {
             if(resultCode == RESULT_OK) {
@@ -122,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Adds a new Player object to the players table
     private void newPlayer(final Player player) {
         Disposable disposable = io.reactivex.Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
@@ -177,6 +179,8 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    // Create a menu in the header of the activity.
+    // See app.res.menu.main_menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -190,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.menu_clear:
 
+                // Add a confirmation message before deletion
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle("Delete All Players")
                         .setMessage("Are you sure?")
@@ -267,8 +272,6 @@ public class MainActivity extends AppCompatActivity {
 
                 editFirstName.setText(player.getFirstName());
 
-                //Intent i = new Intent(MainActivity.this, EditUser.class);
-
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle("Edit")
                         .setMessage("Edit User")
@@ -312,6 +315,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // Remove row form Player table where id matches given id
     private void deletePlayer(final int id) {
         Disposable disposable = io.reactivex.Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
@@ -372,6 +376,7 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable.add(disposable);
     }
 
+    // Clean up
     @Override
     protected void onDestroy() {
         super.onDestroy();
