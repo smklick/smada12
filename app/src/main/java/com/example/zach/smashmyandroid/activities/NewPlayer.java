@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
@@ -46,7 +45,7 @@ public class NewPlayer extends AppCompatActivity {
 
                     final Player p = new Player(firstName.getText().toString(), lastName.getText().toString(), smashName.getText().toString(), Integer.parseInt(rank.getText().toString()));
 
-                    Intent i = new Intent(NewPlayer.this, MainActivity.class).putExtra("player", p);
+                    Intent i = new Intent(NewPlayer.this, PlayerManager.class).putExtra("player", p);
 
                     setResult(RESULT_OK, i);
 

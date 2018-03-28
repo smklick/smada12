@@ -9,12 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
 import com.example.zach.smashmyandroid.models.Player;
-
-import org.w3c.dom.Text;
 
 public class PlayerDetails extends AppCompatActivity {
 
@@ -59,7 +56,7 @@ public class PlayerDetails extends AppCompatActivity {
                 player.setSmashName(smashName.getText().toString());
                 player.setRank(Integer.parseInt(rank.getText().toString()));
 
-                Intent i = new Intent(PlayerDetails.this, MainActivity.class).putExtra("player", player);
+                Intent i = new Intent(PlayerDetails.this, PlayerManager.class).putExtra("player", player);
                 setResult(RESULT_OK, i);
                 finish();
             }
