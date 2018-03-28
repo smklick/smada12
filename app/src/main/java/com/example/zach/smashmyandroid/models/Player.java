@@ -112,7 +112,7 @@ import android.support.annotation.NonNull;
     }
 
     public String toString() {
-        String s = id + ": " +firstName + " \"" + smashName + "\" " + lastName;
+        String s = firstName + " " + lastName + "\n" + smashName + " - " + rank ;
         return s;
     }
 }

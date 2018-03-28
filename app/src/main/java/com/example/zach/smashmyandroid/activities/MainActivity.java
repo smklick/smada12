@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
-import com.example.zach.smashmyandroid.database.PlayerDatabase;
+import com.example.zach.smashmyandroid.database.SmaDatabase;
 import com.example.zach.smashmyandroid.database.PlayerRepository;
 import com.example.zach.smashmyandroid.local.PlayerDataSource;
 import com.example.zach.smashmyandroid.models.Player;
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton addPlayer;
 
     static final int EDIT_USER = 1;
+    static final int NEW_USER = 2;
 
     List<Player> playersList = new ArrayList<>();
     ArrayAdapter adapter;
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         registerForContextMenu(lvPlayers);
         lvPlayers.setAdapter(adapter);
 
-        PlayerDatabase playerDatabase = PlayerDatabase.getInstance(this);
+        SmaDatabase playerDatabase = SmaDatabase.getInstance(this);
         playerRepository = PlayerRepository.getInstance(PlayerDataSource.getInstance(playerDatabase.playerDao()));
 
         loadData();
@@ -76,33 +77,10 @@ public class MainActivity extends AppCompatActivity {
         addPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Disposable disposable = io.reactivex.Observable.create(new ObservableOnSubscribe<Object>() {
-                    @Override
-                    public void subscribe(ObservableEmitter<Object> e) throws Exception {
-                        Player player = new Player("Zach", "Cutshall", "DadMuscles", 700);
-                        playerRepository.insertUser(player);
-                        e.onComplete();
-                    }
-                }).observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
-                        .subscribe(new Consumer() {
-                                       @Override
-                                       public void accept(Object o) throws Exception {
-                                           Toast.makeText(MainActivity.this, "User Added", Toast.LENGTH_SHORT).show();
-                                       }
-                                   }, new Consumer<Throwable>() {
-                                       @Override
-                                       public void accept(Throwable throwable) throws Exception {
-                                           Toast.makeText(MainActivity.this, "" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                                       }
-                                   },
-                                new Action() {
-                                    @Override
-                                    public void run() throws Exception {
-                                        loadData();
-                                    }
-                                }
-                        );
+
+                Intent i = new Intent(MainActivity.this, NewPlayer.class);
+                startActivityForResult(i, NEW_USER);
+
             }
         });
 
@@ -135,7 +113,43 @@ public class MainActivity extends AppCompatActivity {
                 updatePlayer(p);
                 loadData();
             }
+        } else if (requestCode == NEW_USER) {
+            if(resultCode == RESULT_OK) {
+               final Player p = data.getParcelableExtra("player");
+                newPlayer(p);
+
+            }
         }
+    }
+
+    private void newPlayer(final Player player) {
+        Disposable disposable = io.reactivex.Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> e) throws Exception {
+                playerRepository.insertUser(player);
+                e.onComplete();
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Consumer() {
+                               @Override
+                               public void accept(Object o) throws Exception {
+                                   Toast.makeText(MainActivity.this, "User Added", Toast.LENGTH_SHORT).show();
+                               }
+                           }, new Consumer<Throwable>() {
+                               @Override
+                               public void accept(Throwable throwable) throws Exception {
+                                   Toast.makeText(MainActivity.this, "" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                               }
+                           },
+                        new Action() {
+                            @Override
+                            public void run() throws Exception {
+                                loadData();
+                            }
+                        }
+                );
+        compositeDisposable.add(disposable);
     }
 
     // Retrieves all users from memory
@@ -175,7 +189,21 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.menu_clear:
-                deleteAllUsers();
+
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Delete All Players")
+                        .setMessage("Are you sure?")
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteAllUsers();
+                            }
+                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -327,7 +355,6 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(new Consumer() {
                                @Override
                                public void accept(Object o) throws Exception {
-
                                }
                            }, new Consumer<Throwable>() {
                                @Override

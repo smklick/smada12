@@ -1,11 +1,16 @@
 package com.example.zach.smashmyandroid.models;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.example.zach.smashmyandroid.models.Player;
+
+import io.reactivex.annotations.NonNull;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -28,10 +33,17 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 },
         indices = {@Index("id"), @Index("winnerId"), @Index("loserId")})
 
-public class Match {
+public class Match implements Parcelable{
 
-    @PrimaryKey private final int id;
+    @NonNull
+    @ColumnInfo(name = "id")
+    @PrimaryKey(autoGenerate = true)
+    private final int id;
+
+    @ColumnInfo(name = "winnerId")
     private int winnerId;
+
+    @ColumnInfo(name = "loserId")
     private int loserId;
 
     public Match(final int id, int winnerId, int loserId) {
@@ -39,6 +51,21 @@ public class Match {
         this.winnerId = winnerId;
         this.loserId = loserId;
     }
+
+    protected Match(Parcel in) {
+        id = in.readInt();
+        winnerId = in.readInt();
+        loserId = in.readInt();
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator(){
+        public Match createFromParcel(Parcel p){
+            return new Match(p);
+        }
+        public Match[] newArray(int size) {
+            return new Match[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -58,5 +85,17 @@ public class Match {
 
     public void setLoserId(int loserId) {
         this.loserId = loserId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(winnerId);
+        dest.writeInt(loserId);
     }
 }

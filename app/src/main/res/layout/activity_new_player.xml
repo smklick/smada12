@@ -52,17 +52,5 @@
             android:layout_marginTop="5dp"
             android:layout_gravity="center_horizontal"/>
 
-        <TextView
-            android:id="@+id/playerIdLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ID:"
-            android:textSize="30sp" />
-
-        <TextView
-            android:id="@+id/playerID"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="24sp" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
