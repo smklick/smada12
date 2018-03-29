@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.zach.smashmyandroid.R;
+import com.example.zach.smashmyandroid.activities.Player.PlayerManager;
 
 public class MainActivity extends AppCompatActivity {
 

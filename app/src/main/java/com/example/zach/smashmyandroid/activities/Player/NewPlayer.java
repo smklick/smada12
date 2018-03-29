@@ -1,4 +1,4 @@
-package com.example.zach.smashmyandroid.activities;
+package com.example.zach.smashmyandroid.activities.Player;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

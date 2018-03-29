@@ -1,5 +1,5 @@
 
-package com.example.zach.smashmyandroid.activities;
+package com.example.zach.smashmyandroid.activities.Player;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -73,7 +73,7 @@ public class PlayerManager extends AppCompatActivity {
 
         loadData();
 
-        // Floating action button adds a user to the list. Currently cannot edit initial player details.
+        // Launch new user creation activity
         addPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
