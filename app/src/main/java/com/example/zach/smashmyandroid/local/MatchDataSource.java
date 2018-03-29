@@ -1,5 +1,6 @@
-package com.example.zach.smashmyandroid.database;
+package com.example.zach.smashmyandroid.local;
 
+import com.example.zach.smashmyandroid.database.IMatchDataSource;
 import com.example.zach.smashmyandroid.models.Match;
 
 import java.util.List;
@@ -10,40 +11,38 @@ import io.reactivex.Flowable;
  * Created by zcuts on 3/28/2018.
  */
 
-public class MatchRepository implements IMatchDataSource {
+public class MatchDataSource implements IMatchDataSource {
 
-    private IMatchDataSource mLocalDataSource;
+    private MatchDao matchDao;
+    private static MatchDataSource INSTANCE;
 
-    private static MatchRepository INSTANCE;
+    public MatchDataSource(MatchDao matchDao) { this.matchDao = matchDao; }
 
-    public MatchRepository(IMatchDataSource mLocalDataSource) {
-        this.mLocalDataSource = mLocalDataSource;
-    }
-
-    public static MatchRepository getInstance(IMatchDataSource mLocalDataSource) {
+    public static MatchDataSource getInstance(MatchDao matchDao) {
         if(INSTANCE == null) {
-            INSTANCE = new MatchRepository(mLocalDataSource);
+            INSTANCE = new MatchDataSource(matchDao);
         }
         return INSTANCE;
     }
+
     @Override
     public Flowable<List<Match>> getMatchesByUser(int id) {
-        return mLocalDataSource.getMatchesByUser(id);
+        return matchDao.getMatchesByUser(id);
     }
 
     @Override
     public Flowable<List<Match>> getAllMatches() {
-        return getAllMatches();
+        return matchDao.getAllMatches();
     }
 
     @Override
     public Flowable<List<Match>> getMatch(int id) {
-        return getMatchesByUser(id);
+        return matchDao.getMatch(id);
     }
 
     @Override
     public Flowable<List<Match>> getMatchesByTournament(int id) {
-        return getMatchesByUser(id);
+        return matchDao.getMatchesByTournament(id);
     }
 
     @Override
@@ -53,16 +52,16 @@ public class MatchRepository implements IMatchDataSource {
 
     @Override
     public void insert(Match... match) {
-        mLocalDataSource.insert(match);
+        matchDao.insert(match);
     }
 
     @Override
     public void update(Match... match) {
-        mLocalDataSource.update(match);
+        matchDao.update(match);
     }
 
     @Override
     public void delete(Match... match) {
-        mLocalDataSource.delete(match);
+        matchDao.delete(match);
     }
 }

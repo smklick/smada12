@@ -18,6 +18,10 @@ public interface IMatchDataSource {
 
     Flowable<List<Match>> getMatch(int id);
 
+    Flowable<List<Match>> getMatchesByTournament(int id);
+
+    Flowable<List<Match>> getPlayerMatchesByTournament(int tournamentId, int playerId);
+
     void insert(Match... match);
 
     void update(Match... match);

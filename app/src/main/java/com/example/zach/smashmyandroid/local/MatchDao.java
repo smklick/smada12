@@ -28,6 +28,12 @@ public interface MatchDao {
     @Query("select * from Matches where id =:id")
     Flowable<List<Match>> getMatch(int id);
 
+    @Query("select * from Matches where tournamentId =:id")
+    Flowable<List<Match>> getMatchesByTournament(int id);
+
+    @Query("select * from Matches where tournamentId =:tournamentId and (winnerId =:playerId or loserId =:playerId)")
+    Flowable<List<Match>> getPlayerMatchesByTournament(int tournamentId, int playerId);
+
     @Insert
     void insert(Match... match);
 

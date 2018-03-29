@@ -21,6 +21,11 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 
         foreignKeys = {
 
+        @ForeignKey(entity = Tournament.class,
+                    parentColumns = "id",
+                    childColumns = "tournamentId",
+                    onDelete = CASCADE),
+
         @ForeignKey(entity = Player.class,
                 parentColumns = "id",
                 childColumns = "winnerId",
@@ -39,6 +44,10 @@ public class Match implements Parcelable{
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
     private final int id;
+
+    @NonNull
+    @ColumnInfo(name = "tournamentId")
+    private int tournamentId;
 
     @ColumnInfo(name = "winnerId")
     private int winnerId;
@@ -70,6 +79,10 @@ public class Match implements Parcelable{
     public int getId() {
         return id;
     }
+
+    public int getTournamentId() { return tournamentId; };
+
+    public void setTournamentId(int tournamentId) { this.tournamentId = tournamentId; };
 
     public int getWinnerId() {
         return winnerId;
