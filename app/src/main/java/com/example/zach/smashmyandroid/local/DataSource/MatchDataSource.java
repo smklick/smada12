@@ -1,7 +1,8 @@
-package com.example.zach.smashmyandroid.local;
+package com.example.zach.smashmyandroid.local.DataSource;
 
-import com.example.zach.smashmyandroid.database.IMatchDataSource;
-import com.example.zach.smashmyandroid.models.Match;
+import com.example.zach.smashmyandroid.local.Interface.IMatchDataSource;
+import com.example.zach.smashmyandroid.local.dao.MatchDao;
+import com.example.zach.smashmyandroid.local.models.Match;
 
 import java.util.List;
 

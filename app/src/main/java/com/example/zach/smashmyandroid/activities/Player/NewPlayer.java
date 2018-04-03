@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
-import com.example.zach.smashmyandroid.models.Player;
+import com.example.zach.smashmyandroid.local.models.Player;
 
 public class NewPlayer extends AppCompatActivity {
 

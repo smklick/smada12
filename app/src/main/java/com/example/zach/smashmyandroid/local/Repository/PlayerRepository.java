@@ -1,6 +1,7 @@
-package com.example.zach.smashmyandroid.database;
+package com.example.zach.smashmyandroid.local.Repository;
 
-import com.example.zach.smashmyandroid.models.Player;
+import com.example.zach.smashmyandroid.local.Interface.IPlayerDataSource;
+import com.example.zach.smashmyandroid.local.models.Player;
 import io.reactivex.Flowable;
 import java.util.List;
 

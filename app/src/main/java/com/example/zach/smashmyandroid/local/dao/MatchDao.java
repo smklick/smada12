@@ -1,4 +1,4 @@
-package com.example.zach.smashmyandroid.local;
+package com.example.zach.smashmyandroid.local.dao;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
@@ -6,7 +6,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.example.zach.smashmyandroid.models.Match;
+import com.example.zach.smashmyandroid.local.models.Match;
 
 import java.util.List;
 

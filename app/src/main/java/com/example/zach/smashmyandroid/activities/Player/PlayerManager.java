@@ -8,23 +8,20 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
-import com.example.zach.smashmyandroid.database.PlayerRepository;
-import com.example.zach.smashmyandroid.local.PlayerDataSource;
-import com.example.zach.smashmyandroid.models.Player;
+import com.example.zach.smashmyandroid.local.Repository.PlayerRepository;
+import com.example.zach.smashmyandroid.local.DataSource.PlayerDataSource;
+import com.example.zach.smashmyandroid.local.models.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +43,7 @@ public class PlayerManager extends AppCompatActivity {
 
     static final int EDIT_USER = 1;
     static final int NEW_USER = 2;
+    static final int VIEW_USER = 3;
 
     List<Player> playersList = new ArrayList<>();
     ArrayAdapter adapter;
@@ -96,10 +94,10 @@ public class PlayerManager extends AppCompatActivity {
                 //PlayerData data = new PlayerData(p.getFirstName(), p.getLastName(), p.getSmashName(), p.getRank());
 
                 // Add PlayerData parcel to new intent
-                Intent i = new Intent(PlayerManager.this, PlayerDetails.class).putExtra("player", p);
+                Intent i = new Intent(PlayerManager.this, PlayerProfile.class).putExtra("player", p);
 
                 // Start new activity with intent containing player data
-                startActivityForResult(i, EDIT_USER);
+                startActivityForResult(i, VIEW_USER);
 
             }
         });
@@ -265,33 +263,12 @@ public class PlayerManager extends AppCompatActivity {
         switch (item.getItemId()) {
             case 0: // Update User
             {
-                LinearLayout editPlayerDetailsView = new LinearLayout(PlayerManager.this);
-                editPlayerDetailsView.setOrientation(LinearLayout.VERTICAL);
 
-                final EditText editFirstName = new EditText(PlayerManager.this);
+                // Add PlayerData parcel to new intent
+                Intent i = new Intent(PlayerManager.this, PlayerDetails.class).putExtra("player", player);
 
-                editFirstName.setText(player.getFirstName());
-
-                new AlertDialog.Builder(PlayerManager.this)
-                        .setTitle("Edit")
-                        .setMessage("Edit User")
-                        .setView(editFirstName)
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if(TextUtils.isEmpty(editFirstName.getText().toString()))
-                                    return;
-                                else {
-                                    player.setFirstName(editFirstName.getText().toString());
-                                    updatePlayer(player);
-                                }
-                            }
-                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create().show();
+                // Start new activity with intent containing player data
+                startActivityForResult(i, EDIT_USER);
             }
             break;
             case 1: // Delete User

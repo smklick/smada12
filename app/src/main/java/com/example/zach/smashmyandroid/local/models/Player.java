@@ -1,4 +1,4 @@
-package com.example.zach.smashmyandroid.models;
+package com.example.zach.smashmyandroid.local.models;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;

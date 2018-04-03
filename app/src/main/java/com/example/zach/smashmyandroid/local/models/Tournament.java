@@ -1,4 +1,4 @@
-package com.example.zach.smashmyandroid.models;
+package com.example.zach.smashmyandroid.local.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -69,5 +69,9 @@ public class Tournament implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String toString() {
+        return this.name;
     }
 }

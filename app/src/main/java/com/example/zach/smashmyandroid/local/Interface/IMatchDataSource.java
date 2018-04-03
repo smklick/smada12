@@ -1,6 +1,6 @@
-package com.example.zach.smashmyandroid.database;
+package com.example.zach.smashmyandroid.local.Interface;
 
-import com.example.zach.smashmyandroid.models.Match;
+import com.example.zach.smashmyandroid.local.models.Match;
 
 import java.util.List;
 

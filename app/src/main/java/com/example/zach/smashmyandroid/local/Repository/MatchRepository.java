@@ -1,6 +1,7 @@
-package com.example.zach.smashmyandroid.database;
+package com.example.zach.smashmyandroid.local.Repository;
 
-import com.example.zach.smashmyandroid.models.Match;
+import com.example.zach.smashmyandroid.local.Interface.IMatchDataSource;
+import com.example.zach.smashmyandroid.local.models.Match;
 
 import java.util.List;
 

@@ -1,24 +1,23 @@
 package com.example.zach.smashmyandroid.activities.Player;
 
-import android.app.Application;
-import android.arch.persistence.room.Room;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
-import com.example.zach.smashmyandroid.database.MatchRepository;
+import com.example.zach.smashmyandroid.local.Repository.MatchRepository;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
-import com.example.zach.smashmyandroid.local.MatchDataSource;
-import com.example.zach.smashmyandroid.models.Match;
-import com.example.zach.smashmyandroid.models.Player;
+import com.example.zach.smashmyandroid.local.DataSource.MatchDataSource;
+import com.example.zach.smashmyandroid.local.models.Match;
+import com.example.zach.smashmyandroid.local.models.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -28,6 +27,10 @@ import io.reactivex.schedulers.Schedulers;
 public class PlayerProfile extends AppCompatActivity {
 
     SmaDatabase mDb;
+
+    TextView name;
+    TextView smashName;
+    TextView rank;
 
     private ListView lvMatches;
 
@@ -43,6 +46,16 @@ public class PlayerProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_profile);
+
+        name = findViewById(R.id.name);
+        smashName = findViewById(R.id.smashName);
+        rank = findViewById(R.id.rank);
+
+        final Player player = getIntent().getExtras().getParcelable("player");
+
+        name.setText(player.getFirstName().toString() + " " + player.getLastName().toString());
+        smashName.setText(player.getSmashName().toString());
+        rank.setText(Integer.toString(player.getRank()));
 
         mCompositeDisposable = new CompositeDisposable();
 

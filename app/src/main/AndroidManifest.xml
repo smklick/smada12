@@ -21,8 +21,11 @@
         <activity android:name=".activities.Player.PlayerDetails" />
         <activity android:name=".activities.Player.NewPlayer" />
         <activity android:name=".activities.Player.PlayerManager" />
-        <activity android:name=".activities.NewMatch" />
-        <activity android:name=".activities.Player.PlayerProfile"></activity>
+        <activity android:name=".activities.Match.NewMatch" />
+        <activity android:name=".activities.Player.PlayerProfile" />
+        <activity android:name=".activities.Tournament.TournamentManager" />
+        <activity android:name=".activities.Tournament.NewTournament" />
+        <activity android:name=".activities.Tournament.TournamentDetails"></activity>
     </application>
 
 </manifest>

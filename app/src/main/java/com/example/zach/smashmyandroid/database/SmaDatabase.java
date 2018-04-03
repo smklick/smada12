@@ -5,11 +5,12 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import com.example.zach.smashmyandroid.local.MatchDao;
-import com.example.zach.smashmyandroid.local.PlayerDao;
-import com.example.zach.smashmyandroid.models.Match;
-import com.example.zach.smashmyandroid.models.Player;
-import com.example.zach.smashmyandroid.models.Tournament;
+import com.example.zach.smashmyandroid.local.dao.MatchDao;
+import com.example.zach.smashmyandroid.local.dao.PlayerDao;
+import com.example.zach.smashmyandroid.local.dao.TournamentDao;
+import com.example.zach.smashmyandroid.local.models.Match;
+import com.example.zach.smashmyandroid.local.models.Player;
+import com.example.zach.smashmyandroid.local.models.Tournament;
 
 import static com.example.zach.smashmyandroid.database.SmaDatabase.DATABASE_VERSION;
 
@@ -20,10 +21,11 @@ import static com.example.zach.smashmyandroid.database.SmaDatabase.DATABASE_VERS
  */
 @Database(entities = {Player.class, Match.class, Tournament.class}, version = DATABASE_VERSION)
 public abstract class SmaDatabase extends RoomDatabase {
-    public static final int DATABASE_VERSION=3;
+    public static final int DATABASE_VERSION=4;
     public static final String DATABASE_NAME="smada12";
     public abstract PlayerDao playerDao();
     public abstract MatchDao matchDao();
+    public abstract TournamentDao tournamentDao();
     private static SmaDatabase INSTANCE;
     public static SmaDatabase getInstance(Context context) {
         if(INSTANCE == null) {

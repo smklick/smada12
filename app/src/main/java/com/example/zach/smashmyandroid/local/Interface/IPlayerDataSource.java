@@ -1,10 +1,6 @@
-package com.example.zach.smashmyandroid.database;
+package com.example.zach.smashmyandroid.local.Interface;
 
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.Query;
-
-import com.example.zach.smashmyandroid.models.Player;
+import com.example.zach.smashmyandroid.local.models.Player;
 
 import java.util.List;
 

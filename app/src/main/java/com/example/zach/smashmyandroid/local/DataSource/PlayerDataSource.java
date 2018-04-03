@@ -1,7 +1,8 @@
-package com.example.zach.smashmyandroid.local;
+package com.example.zach.smashmyandroid.local.DataSource;
 
-import com.example.zach.smashmyandroid.database.IPlayerDataSource;
-import com.example.zach.smashmyandroid.models.Player;
+import com.example.zach.smashmyandroid.local.Interface.IPlayerDataSource;
+import com.example.zach.smashmyandroid.local.dao.PlayerDao;
+import com.example.zach.smashmyandroid.local.models.Player;
 
 import java.util.List;
 

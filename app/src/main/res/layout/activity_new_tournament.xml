@@ -4,41 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.zach.smashmyandroid.activities.Match.NewMatch">
+    tools:context="com.example.zach.smashmyandroid.activities.Tournament.NewTournament">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="15dp"
         android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/tournamentName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Tournament Name"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp"
+            android:inputType="textPersonName" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/winner"
+            <CheckBox
+                android:id="@+id/isDoubles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_margin="5dp"/>
-
-            <TextView
-                android:id="@+id/versusLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="V.S."
-                android:textAlignment="center"
-                android:textSize="24sp" />
-
-            <Spinner
-                android:id="@+id/loser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_weight="1" />
+                android:text="Doubles" />
         </LinearLayout>
 
         <Button
@@ -47,6 +40,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
-            android:text="Create" />
+            android:text="Submit" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
