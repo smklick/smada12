@@ -5,9 +5,18 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.zach.smashmyandroid.activities.Tournament.TournamentDetails;
+import com.example.zach.smashmyandroid.database.SmaDatabase;
+import com.example.zach.smashmyandroid.local.DataSource.PlayerDataSource;
+import com.example.zach.smashmyandroid.local.Repository.PlayerRepository;
+
+import java.util.ArrayList;
+
+import io.reactivex.Flowable;
 import io.reactivex.annotations.NonNull;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -41,7 +50,7 @@ public class Match implements Parcelable{
     @NonNull
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
-    private final int id;
+    private int id;
 
     @NonNull
     @ColumnInfo(name = "tournamentId")
@@ -53,14 +62,15 @@ public class Match implements Parcelable{
     @ColumnInfo(name = "loserId")
     private int loserId;
 
-    public Match(final int id, int winnerId, int loserId) {
-        this.id = id;
+    public Match( int tournamentId, int winnerId, int loserId) {
+        this.tournamentId = tournamentId;
         this.winnerId = winnerId;
         this.loserId = loserId;
     }
 
     protected Match(Parcel in) {
         id = in.readInt();
+        tournamentId = in.readInt();
         winnerId = in.readInt();
         loserId = in.readInt();
     }
@@ -77,6 +87,8 @@ public class Match implements Parcelable{
     public int getId() {
         return id;
     }
+
+    public void setId(int id) { this.id = id; }
 
     public int getTournamentId() { return tournamentId; };
 
@@ -105,8 +117,10 @@ public class Match implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeInt(winnerId);
-        dest.writeInt(loserId);
+        dest.writeInt(this.id);
+        dest.writeInt(this.tournamentId);
+        dest.writeInt(this.winnerId);
+        dest.writeInt(this.loserId);
     }
+
 }

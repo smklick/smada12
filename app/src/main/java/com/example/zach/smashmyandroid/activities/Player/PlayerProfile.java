@@ -72,6 +72,8 @@ public class PlayerProfile extends AppCompatActivity {
 
         mDb = SmaDatabase.getInstance(this);
         matchRepository = MatchRepository.getInstance(MatchDataSource.getInstance(mDb.matchDao()));
+
+        loadData(player.getId());
     }
 
 
