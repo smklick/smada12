@@ -123,4 +123,8 @@ public class Match implements Parcelable{
         dest.writeInt(this.loserId);
     }
 
+    public String toString() {
+        return winnerId + " v.s. " + loserId;
+    }
+
 }

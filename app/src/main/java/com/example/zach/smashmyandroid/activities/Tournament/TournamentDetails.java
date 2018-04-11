@@ -16,7 +16,9 @@ import com.example.zach.smashmyandroid.activities.Match.NewMatch;
 import com.example.zach.smashmyandroid.activities.Player.PlayerManager;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
 import com.example.zach.smashmyandroid.local.DataSource.MatchDataSource;
+import com.example.zach.smashmyandroid.local.DataSource.PlayerDataSource;
 import com.example.zach.smashmyandroid.local.Repository.MatchRepository;
+import com.example.zach.smashmyandroid.local.Repository.PlayerRepository;
 import com.example.zach.smashmyandroid.local.models.Match;
 import com.example.zach.smashmyandroid.local.models.Tournament;
 
@@ -45,6 +47,7 @@ public class TournamentDetails extends AppCompatActivity {
 
     private CompositeDisposable compositeDisposable;
     private MatchRepository matchRepository;
+    private PlayerRepository playerRepository;
 
     private Tournament tournament;
 
@@ -71,7 +74,7 @@ public class TournamentDetails extends AppCompatActivity {
 
         SmaDatabase smaDb = SmaDatabase.getInstance(this);
         matchRepository = MatchRepository.getInstance(MatchDataSource.getInstance(smaDb.matchDao()));
-
+        playerRepository = PlayerRepository.getInstance(PlayerDataSource.getInstance(smaDb.playerDao()));
         loadData();
 
         addMatch.setOnClickListener(new View.OnClickListener() {

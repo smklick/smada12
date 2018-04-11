@@ -21,7 +21,7 @@ import static com.example.zach.smashmyandroid.database.SmaDatabase.DATABASE_VERS
  */
 @Database(entities = {Player.class, Match.class, Tournament.class}, version = DATABASE_VERSION)
 public abstract class SmaDatabase extends RoomDatabase {
-    public static final int DATABASE_VERSION=4;
+    public static final int DATABASE_VERSION=6;
     public static final String DATABASE_NAME="smada12";
     public abstract PlayerDao playerDao();
     public abstract MatchDao matchDao();
