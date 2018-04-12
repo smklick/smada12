@@ -78,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
         tabs.addTab(tabs.newTab().setText("Tournaments"));
 
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+
+
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
@@ -87,8 +90,6 @@ public class MainActivity extends AppCompatActivity {
                 }else if (position == 1) {
                     selected = tf;
                 }
-
-                selected.set
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.contentFrame, selected).commit();
 

@@ -1,10 +1,15 @@
 package com.example.zach.smashmyandroid.activities.Player;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,18 +27,26 @@ import com.example.zach.smashmyandroid.local.models.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+
+import static android.app.Activity.RESULT_OK;
 
 public class FragmentPlayerList extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PLAYERS = "playersList";
     private static final String ARG_PARAM2 = "param2";
+    static final int NEW_USER = 1;
+    static final int EDIT_USER = 2;
+
 
     // TODO: Rename and change types of parameters
     private ArrayList<Player> playersList;
@@ -111,6 +124,7 @@ public class FragmentPlayerList extends Fragment {
 
         lvPlayers = rootView.findViewById(R.id.listPlayers);
         lvPlayers.setAdapter(adapter);
+        registerForContextMenu(lvPlayers);
 
 
         lvPlayers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -120,22 +134,92 @@ public class FragmentPlayerList extends Fragment {
                 // Create player object from list data
                 Player p = (Player) lvPlayers.getItemAtPosition(position);
 
-                // Create a PlayerData parcel
-                //PlayerData data = new PlayerData(p.getFirstName(), p.getLastName(), p.getSmashName(), p.getRank());
-
                 // Add PlayerData parcel to new intent
                 Intent i = new Intent(getActivity(), PlayerProfile.class).putExtra("player", p);
 
-                startActivity(i);
-
-                // Start new activity with intent containing player data
-                //startActivityForResult(i, VIEW_USER);
+                startActivityForResult(i, NEW_USER);
 
             }
         });
 
         return rootView;
 
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        menu.setHeaderTitle("Select Action:");
+
+        menu.add(Menu.NONE, 0, menu.NONE, "UPDATE");
+        menu.add(Menu.NONE, 1, menu.NONE, "DELETE");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        final Player player = playersList.get(info.position);
+        switch (item.getItemId()) {
+            case 0: // Update User
+            {
+
+                // Add PlayerData parcel to new intent
+                Intent i = new Intent(getActivity(), PlayerDetails.class).putExtra("player", player);
+
+                // Start new activity with intent containing player data
+                startActivityForResult(i, EDIT_USER);
+            }
+            break;
+            case 1: // Delete User
+            {
+                new AlertDialog.Builder(getActivity())
+                        .setMessage("Do you want to delete "+ player.getFirstName() + " " + player.getLastName())
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deletePlayer(player.getId());
+                            }
+                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+            }
+            break;
+        }
+        return true;
+    }
+
+    private void deletePlayer(final int id) {
+        Disposable disposable = io.reactivex.Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> e) throws Exception {
+                playerRepository.deleteUser(id);
+                e.onComplete();
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Consumer() {
+                               @Override
+                               public void accept(Object o) throws Exception {
+
+                               }
+                           }, new Consumer<Throwable>() {
+                               @Override
+                               public void accept(Throwable throwable) throws Exception {
+                                   Toast.makeText(getActivity(), "" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                               }
+                           },
+                        new Action() {
+                            @Override
+                            public void run() throws Exception {
+                                loadData();
+                            }
+                        }
+                );
+        compositeDisposable.add(disposable);
     }
 
     private void loadData() {

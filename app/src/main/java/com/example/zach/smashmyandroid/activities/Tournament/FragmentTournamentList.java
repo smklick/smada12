@@ -70,7 +70,9 @@ public class FragmentTournamentList extends Fragment {
             tournamentList = getArguments().getParcelableArrayList("tournamentList");
         }
 
-        adapter = new ArrayAdapter<Tournament>(getActivity(), 0, tournamentList) {
+        adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, tournamentList);
+
+        /*adapter = new ArrayAdapter<Tournament>(getActivity(), 0, tournamentList) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 Tournament t = tournamentList.get(position);
@@ -86,7 +88,7 @@ public class FragmentTournamentList extends Fragment {
 
                 return convertView;
             }
-        };
+        };*/
 
         loadData();
     }
@@ -95,9 +97,9 @@ public class FragmentTournamentList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.player_list, container, false);
+        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.tournament_list, container, false);
 
-        lvTournaments = rootView.findViewById(R.id.listPlayers);
+        lvTournaments = rootView.findViewById(R.id.listTournaments);
         lvTournaments.setAdapter(adapter);
 
 
