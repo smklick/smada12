@@ -1,6 +1,5 @@
 package com.example.zach.smashmyandroid.activities;
 
-import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -9,34 +8,33 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
+
 import com.example.zach.smashmyandroid.activities.Player.FragmentPlayerList;
 import com.example.zach.smashmyandroid.activities.Player.TestFragment;
+import com.example.zach.smashmyandroid.activities.Tournament.FragmentTournamentList;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
 import com.example.zach.smashmyandroid.local.DataSource.PlayerDataSource;
 import com.example.zach.smashmyandroid.local.Repository.PlayerRepository;
 import com.example.zach.smashmyandroid.local.models.Player;
+import com.example.zach.smashmyandroid.local.models.Tournament;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
     FragmentPlayerList playerFragment;
-    TestFragment testFragment;
+    FragmentTournamentList tournamentFragment;
+    TestFragment tf;
 
     PlayerRepository playerRepository;
     SmaDatabase smaDb;
     private CompositeDisposable compositeDisposable;
     ArrayList<Player> players = new ArrayList<>();
+    ArrayList<Tournament> tournaments = new ArrayList<>();
     ArrayAdapter adapter;
 
     @Override
@@ -69,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         playerFragment = FragmentPlayerList.newInstance(players);
-        testFragment = new TestFragment();
+        tournamentFragment = FragmentTournamentList.newInstance(tournaments);
+        tf = new TestFragment();
 
         getSupportFragmentManager().beginTransaction().add(R.id.contentFrame, playerFragment);
 
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 if(position == 0) {
                     selected = playerFragment;
                 }else if (position == 1) {
-                    selected = testFragment;
+                    selected = tf;
                 }
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.contentFrame, selected).commit();
