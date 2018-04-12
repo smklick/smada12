@@ -39,6 +39,16 @@ public class TournamentRepository implements ITournamentDataSource {
     }
 
     @Override
+    public Flowable<List<Tournament>> getFinishedTournaments() {
+        return mLocalDataSource.getFinishedTournaments();
+    }
+
+    @Override
+    public Flowable<List<Tournament>> getUnfinishedTournaments() {
+        return mLocalDataSource.getUnfinishedTournaments();
+    }
+
+    @Override
     public void insert(Tournament... tournament) {
         mLocalDataSource.insert(tournament);
     }

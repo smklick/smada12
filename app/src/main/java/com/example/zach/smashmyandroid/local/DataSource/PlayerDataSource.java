@@ -34,7 +34,7 @@ public class PlayerDataSource implements IPlayerDataSource {
     }
 
     @Override
-    public Flowable<Player> loadUserById(int id) {
+    public Player loadUserById(int id) {
         return playerDao.loadUserById(id);
     }
 

@@ -7,6 +7,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by Zach on 3/19/2018.
@@ -55,6 +57,7 @@ import android.support.annotation.NonNull;
         public Player[] newArray(int size) {
             return new Player[size];
         }
+        //public ArrayList<Player> newArrayList() { return new ArrayList<Player>();}
     };
 
     @Override

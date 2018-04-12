@@ -12,12 +12,15 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:elevation="1dp"
-        android:background="@color/colorAccent">
+        android:background="@color/colorAccent"
+        >
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
         </android.support.v7.widget.Toolbar>
+
     </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.FloatingActionButton

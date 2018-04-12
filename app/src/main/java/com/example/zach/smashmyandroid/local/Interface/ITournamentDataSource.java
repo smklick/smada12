@@ -16,6 +16,10 @@ public interface ITournamentDataSource {
 
     Flowable<List<Tournament>> getTournament(int id);
 
+    Flowable<List<Tournament>> getFinishedTournaments();
+
+    Flowable<List<Tournament>> getUnfinishedTournaments();
+
     void insert(Tournament... tournament);
 
     void update(Tournament... tournament);

@@ -5,12 +5,14 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
+import android.support.design.widget.FloatingActionButton;
 
 import com.example.zach.smashmyandroid.local.models.Player;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
@@ -29,7 +31,7 @@ public interface PlayerDao {
     Flowable<List<Player>> loadAllUsers();
 
     @Query("select * from Players where id = :id")
-    Flowable<Player> loadUserById(int id);
+    Player loadUserById(int id);
 
     @Query("select * from Players where firstName = :firstName " +
             "and lastName = :lastName")

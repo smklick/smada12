@@ -32,7 +32,7 @@ public class PlayerRepository implements IPlayerDataSource {
     }
 
     @Override
-    public Flowable<Player> loadUserById(int id) {
+    public Player loadUserById(int id) {
         return mLocalDataSource.loadUserById(id);
     }
 

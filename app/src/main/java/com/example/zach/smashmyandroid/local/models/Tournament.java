@@ -20,8 +20,12 @@ public class Tournament implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    @NonNull
     @ColumnInfo(name="name")
     private String name;
+
+    @ColumnInfo(name="finished")
+    private int status;
 
     public Tournament(String name) {
         this.name = name;
@@ -69,6 +73,14 @@ public class Tournament implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getStatus() {
+        return this.status;
     }
 
     public String toString() {

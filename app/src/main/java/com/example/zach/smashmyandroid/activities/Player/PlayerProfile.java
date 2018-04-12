@@ -3,21 +3,26 @@ package com.example.zach.smashmyandroid.activities.Player;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
+import com.example.zach.smashmyandroid.local.DataSource.PlayerDataSource;
 import com.example.zach.smashmyandroid.local.Repository.MatchRepository;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
 import com.example.zach.smashmyandroid.local.DataSource.MatchDataSource;
+import com.example.zach.smashmyandroid.local.Repository.PlayerRepository;
 import com.example.zach.smashmyandroid.local.models.Match;
 import com.example.zach.smashmyandroid.local.models.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -41,6 +46,7 @@ public class PlayerProfile extends AppCompatActivity {
 
     private CompositeDisposable mCompositeDisposable;
     private MatchRepository matchRepository;
+    private PlayerRepository playerRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +67,37 @@ public class PlayerProfile extends AppCompatActivity {
 
         lvMatches = (ListView) findViewById(R.id.matches);
 
+
+        mDb = SmaDatabase.getInstance(this);
+        matchRepository = MatchRepository.getInstance(MatchDataSource.getInstance(mDb.matchDao()));
+        playerRepository = PlayerRepository.getInstance(PlayerDataSource.getInstance(mDb.playerDao()));
+        loadData(player.getId());
+
         // Create new array adapter
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, matchList);
+        adapter = new ArrayAdapter<Match>(this, 0, matchList) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                Match m = matchList.get(position);
+                final Player[] loser = new Player[1];
+                final Player[] winner = new Player[1];
+                Observable.just(mDb).subscribeOn(Schedulers.io()).subscribe(smaDb -> winner[0] = playerRepository.loadUserById(m.getWinnerId()));
+                Observable.just(mDb).subscribeOn(Schedulers.io()).subscribe(smaDb -> loser[0] = playerRepository.loadUserById(m.getLoserId()));
+
+
+                if (convertView == null) {
+                    convertView = getLayoutInflater()
+                            .inflate(R.layout.match_list_item, null, false);
+                }
+                TextView winnerName = convertView.findViewById(R.id.winnerName);
+                TextView loserName = convertView.findViewById(R.id.loserName);
+
+                winnerName.setText(winner[0].getSmashName());
+                loserName.setText(loser[0].getSmashName());
+
+                return convertView;
+            }
+        };
 
         // Register list view for use with context menus
         registerForContextMenu(lvMatches);
@@ -70,10 +105,6 @@ public class PlayerProfile extends AppCompatActivity {
         // Assign adapter to the listView
         lvMatches.setAdapter(adapter);
 
-        mDb = SmaDatabase.getInstance(this);
-        matchRepository = MatchRepository.getInstance(MatchDataSource.getInstance(mDb.matchDao()));
-
-        loadData(player.getId());
     }
 
 
