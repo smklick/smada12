@@ -17,7 +17,7 @@ public class TestFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.activity_new_player, container, false);
+        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.activity_tournament_manager, container, false);
         return rootView;
     }
 }

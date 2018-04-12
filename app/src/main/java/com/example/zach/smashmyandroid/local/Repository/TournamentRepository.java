@@ -21,7 +21,7 @@ public class TournamentRepository implements ITournamentDataSource {
         this.mLocalDataSource = mLocalDataSource;
     }
 
-    public static TournamentRepository getINSTANCE(ITournamentDataSource mLocalDataSource) {
+    public static TournamentRepository getInstance(ITournamentDataSource mLocalDataSource) {
         if(INSTANCE == null) {
             INSTANCE = new TournamentRepository(mLocalDataSource);
         }

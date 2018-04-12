@@ -2,7 +2,6 @@ package com.example.zach.smashmyandroid.activities.Tournament;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +9,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
 import com.example.zach.smashmyandroid.local.DataSource.TournamentDataSource;
 import com.example.zach.smashmyandroid.local.Repository.TournamentRepository;
-import com.example.zach.smashmyandroid.local.models.Player;
 import com.example.zach.smashmyandroid.local.models.Tournament;
 
 import java.util.ArrayList;
@@ -63,7 +60,7 @@ public class FragmentTournamentList extends Fragment {
         compositeDisposable = new CompositeDisposable();
 
         smaDb = SmaDatabase.getInstance(getActivity());
-        tournamentRepository = TournamentRepository.getINSTANCE(TournamentDataSource.getInstance(smaDb.tournamentDao()));
+        tournamentRepository = TournamentRepository.getInstance(TournamentDataSource.getInstance(smaDb.tournamentDao()));
 
 
         if (getArguments() != null) {
