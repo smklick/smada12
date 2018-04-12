@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
                     selected = tf;
                 }
 
+                selected.set
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.contentFrame, selected).commit();
 
             }
