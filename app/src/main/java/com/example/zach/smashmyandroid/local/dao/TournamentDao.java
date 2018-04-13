@@ -25,11 +25,8 @@ public interface TournamentDao {
     @Query("select * from Tournaments where id =:id")
     Flowable<List<Tournament>> getTournament(int id);
 
-    @Query("select * from Tournaments where finished = 1")
-    Flowable<List<Tournament>> getFinishedTournaments();
-
-    @Query("select * from Tournaments where finished = 0")
-    Flowable<List<Tournament>> getUnfinishedTournaments();
+    @Query("delete from Tournaments")
+    public void clearTable();
 
     @Insert
     void insert(Tournament... tournament);

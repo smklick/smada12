@@ -37,14 +37,7 @@ public class TournamentDataSource implements ITournamentDataSource {
     }
 
     @Override
-    public Flowable<List<Tournament>> getFinishedTournaments() {
-        return tournamentDao.getFinishedTournaments();
-    }
-
-    @Override
-    public Flowable<List<Tournament>> getUnfinishedTournaments() {
-        return tournamentDao.getUnfinishedTournaments();
-    }
+    public void clearTable() { tournamentDao.clearTable(); }
 
     @Override
     public void insert(Tournament... tournament) {

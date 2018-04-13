@@ -17,9 +17,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:background="@color/colorPrimaryDark"
+        android:backgroundTint="@color/colorAccent"
         android:src="@drawable/add"
         android:layout_margin="10dp"
+        android:elevation="6dp"
         android:clickable="true"
         android:focusable="false"/>
 </RelativeLayout>

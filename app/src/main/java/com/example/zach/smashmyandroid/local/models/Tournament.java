@@ -2,6 +2,7 @@ package com.example.zach.smashmyandroid.local.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
@@ -15,6 +16,12 @@ import android.support.annotation.NonNull;
 @Entity(indices = {@Index("id")}, tableName="Tournaments")
 public class Tournament implements Parcelable {
 
+    @Ignore
+    private static final int TOURNAMENT_ONGOING = 0;
+
+    @Ignore
+    private static final int TOURNAMENT_FINISHED = 1;
+
     @NonNull
     @ColumnInfo(name="id")
     @PrimaryKey(autoGenerate = true)
@@ -23,9 +30,6 @@ public class Tournament implements Parcelable {
     @NonNull
     @ColumnInfo(name="name")
     private String name;
-
-    @ColumnInfo(name="finished")
-    private int status;
 
     public Tournament(String name) {
         this.name = name;
@@ -37,13 +41,10 @@ public class Tournament implements Parcelable {
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        @Override
-        public Object createFromParcel(Parcel p) {
+        public Tournament createFromParcel(Parcel p) {
             return new Tournament(p);
         }
-
-        @Override
-        public Object[] newArray(int size) {
+        public Tournament[] newArray(int size) {
             return new Tournament[size];
         }
     };
@@ -73,14 +74,6 @@ public class Tournament implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public int getStatus() {
-        return this.status;
     }
 
     public String toString() {

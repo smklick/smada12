@@ -57,7 +57,6 @@ import java.util.ArrayList;
         public Player[] newArray(int size) {
             return new Player[size];
         }
-        //public ArrayList<Player> newArrayList() { return new ArrayList<Player>();}
     };
 
     @Override

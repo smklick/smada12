@@ -116,7 +116,6 @@ public class FragmentPlayerList extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "FABULOUS", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getActivity(), NewPlayer.class);
                 startActivity(i);
             }

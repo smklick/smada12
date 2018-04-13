@@ -28,6 +28,12 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
+/*
+ * This activity is activated from the MainActivity toolbar, and simply
+ * adds data to the database for testing purposes. There's probably a
+ * better way of achieving this but this was a quick and dirty solution.
+ */
+
 public class Dummy extends AppCompatActivity {
 
     ArrayList<Player> players = new ArrayList<>();
@@ -65,6 +71,13 @@ public class Dummy extends AppCompatActivity {
         Player noah = new Player("Noah","Bumgardner","VorceShard", 700);;
         Player doug = new Player("Doug","Jenkins","badman", 700);;
         Player james = new Player("James","Leffert","weedGoku", 700);
+        Player blake = new Player("Blake", "Mariot", "Mogg", 700);
+        Player dan = new Player("Danny", "Hotson", "2muchDogg", 700);
+        Player joel = new Player("Joel", "Schmole", "Dangable", 700);
+        Player gabe = new Player("Gabe", "Glaser", "zapper", 700);
+        Player britney = new Player("Britney", "Firking", "jamba", 700);
+        Player sherene = new Player("Sherene", "Covert", "Sher", 700);
+        Player vince = new Player("Vincent", "Terranova", "Lazer", 700);
 
         players.add(zach);
         players.add(jeremiah);
@@ -77,25 +90,35 @@ public class Dummy extends AppCompatActivity {
         players.add(noah);
         players.add(doug);
         players.add(james);
-
+        players.add(blake);
+        players.add(dan);
+        players.add(joel);
+        players.add(gabe);
+        players.add(britney);
+        players.add(sherene);
+        players.add(vince);
 
         for(Player p : players) {
             newPlayer(p);
         }
-/*
+
         Tournament sma1 = new Tournament("Smash My Ass 1");
         Tournament sma2 = new Tournament("Smash My Ass 2");
         Tournament sma3 = new Tournament("Smash My Ass 3");
-        Tournament smaIW = new Tournament("Smash at the Inkwell");
+        Tournament smaIW = new Tournament("Smash at Inkwell");
+        Tournament smaIWF = new Tournament("Smash at Inkwell Finals");
+
+
 
         tournaments.add(sma1);
         tournaments.add(sma2);
         tournaments.add(sma3);
         tournaments.add(smaIW);
+        tournaments.add(smaIWF);
 
         for(Tournament t : tournaments) {
             newTournament(t);
-        }*/
+        }
 
         finish();
     }
