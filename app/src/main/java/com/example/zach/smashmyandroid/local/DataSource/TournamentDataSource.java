@@ -37,6 +37,9 @@ public class TournamentDataSource implements ITournamentDataSource {
     }
 
     @Override
+    public void clearTable() { tournamentDao.clearTable(); }
+
+    @Override
     public void insert(Tournament... tournament) {
         tournamentDao.insert(tournament);
     }

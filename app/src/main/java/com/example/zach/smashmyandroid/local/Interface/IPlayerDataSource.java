@@ -15,7 +15,7 @@ public interface IPlayerDataSource {
 
     Flowable<List<Player>> loadAllUsers();
 
-    Flowable<Player> loadUserById(int id);
+    Player loadUserById(int id);
 
     Flowable<List<Player>> findByFirstAndLastName(String firstName, String lastName);
 

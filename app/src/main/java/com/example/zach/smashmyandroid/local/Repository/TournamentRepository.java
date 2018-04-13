@@ -21,7 +21,7 @@ public class TournamentRepository implements ITournamentDataSource {
         this.mLocalDataSource = mLocalDataSource;
     }
 
-    public static TournamentRepository getINSTANCE(ITournamentDataSource mLocalDataSource) {
+    public static TournamentRepository getInstance(ITournamentDataSource mLocalDataSource) {
         if(INSTANCE == null) {
             INSTANCE = new TournamentRepository(mLocalDataSource);
         }
@@ -37,6 +37,9 @@ public class TournamentRepository implements ITournamentDataSource {
     public Flowable<List<Tournament>> getTournament(int id) {
         return mLocalDataSource.getTournament(id);
     }
+
+    @Override
+    public void clearTable() { mLocalDataSource.clearTable(); }
 
     @Override
     public void insert(Tournament... tournament) {
