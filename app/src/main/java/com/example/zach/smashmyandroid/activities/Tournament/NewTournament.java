@@ -6,19 +6,43 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
+import com.example.zach.smashmyandroid.activities.Player.NewPlayer;
+import com.example.zach.smashmyandroid.database.SmaDatabase;
+import com.example.zach.smashmyandroid.local.DataSource.TournamentDataSource;
+import com.example.zach.smashmyandroid.local.Repository.TournamentRepository;
+import com.example.zach.smashmyandroid.local.models.Player;
 import com.example.zach.smashmyandroid.local.models.Tournament;
+
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class NewTournament extends AppCompatActivity {
 
     TextView tournamentName;
     Button submit;
 
+    TournamentRepository tr;
+    SmaDatabase smaDb;
+
+    CompositeDisposable compositeDisposable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_tournament);
+
+        smaDb = SmaDatabase.getInstance(this);
+        tr = TournamentRepository.getInstance(TournamentDataSource.getInstance(smaDb.tournamentDao()));
+        compositeDisposable = new CompositeDisposable();
 
         tournamentName = findViewById(R.id.tournamentName);
         submit = findViewById(R.id.submit);
@@ -28,14 +52,26 @@ public class NewTournament extends AppCompatActivity {
             public void onClick(View v) {
                 if (tournamentName.getText() != null) {
                     Tournament t = new Tournament(tournamentName.getText().toString());
-
-                    Intent i = new Intent(NewTournament.this, TournamentManager.class).putExtra("tournament", t);
-
-                    setResult(RESULT_OK, i);
+                    newTournament(t);
                     finish();
                 }
             }
         });
 
+    }
+
+    private void newTournament(final Tournament t) {
+        Disposable disposable = io.reactivex.Observable.create(e -> {
+            tr.insert(t);
+            e.onComplete();
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(o -> Toast.makeText(NewTournament.this, "User Added", Toast.LENGTH_SHORT).show(),
+                        throwable -> Toast.makeText(NewTournament.this, "" + throwable.getMessage(), Toast.LENGTH_SHORT).show(),
+                        () -> {
+                            //loadData();
+                        }
+                );
+        compositeDisposable.add(disposable);
     }
 }
