@@ -1,6 +1,5 @@
 package com.example.zach.smashmyandroid.activities.Tournament;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,20 +8,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
-import com.example.zach.smashmyandroid.activities.Player.NewPlayer;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
-import com.example.zach.smashmyandroid.local.DataSource.TournamentDataSource;
-import com.example.zach.smashmyandroid.local.Repository.TournamentRepository;
-import com.example.zach.smashmyandroid.local.models.Player;
-import com.example.zach.smashmyandroid.local.models.Tournament;
+import com.example.zach.smashmyandroid.database.local.DataSource.TournamentDataSource;
+import com.example.zach.smashmyandroid.database.local.Repository.TournamentRepository;
+import com.example.zach.smashmyandroid.database.local.models.Tournament;
 
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class NewTournament extends AppCompatActivity {

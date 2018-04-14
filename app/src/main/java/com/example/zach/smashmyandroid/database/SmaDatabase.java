@@ -5,12 +5,12 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import com.example.zach.smashmyandroid.local.dao.MatchDao;
-import com.example.zach.smashmyandroid.local.dao.PlayerDao;
-import com.example.zach.smashmyandroid.local.dao.TournamentDao;
-import com.example.zach.smashmyandroid.local.models.Match;
-import com.example.zach.smashmyandroid.local.models.Player;
-import com.example.zach.smashmyandroid.local.models.Tournament;
+import com.example.zach.smashmyandroid.database.local.dao.MatchDao;
+import com.example.zach.smashmyandroid.database.local.dao.PlayerDao;
+import com.example.zach.smashmyandroid.database.local.dao.TournamentDao;
+import com.example.zach.smashmyandroid.database.local.models.Match;
+import com.example.zach.smashmyandroid.database.local.models.Player;
+import com.example.zach.smashmyandroid.database.local.models.Tournament;
 
 import static com.example.zach.smashmyandroid.database.SmaDatabase.DATABASE_VERSION;
 

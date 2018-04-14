@@ -15,9 +15,9 @@ import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
-import com.example.zach.smashmyandroid.local.DataSource.TournamentDataSource;
-import com.example.zach.smashmyandroid.local.Repository.TournamentRepository;
-import com.example.zach.smashmyandroid.local.models.Tournament;
+import com.example.zach.smashmyandroid.database.local.DataSource.TournamentDataSource;
+import com.example.zach.smashmyandroid.database.local.Repository.TournamentRepository;
+import com.example.zach.smashmyandroid.database.local.models.Tournament;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,8 +123,15 @@ public class FragmentTournamentList extends Fragment {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.activity_tournament_manager, container, false);
 
         lvTournaments = rootView.findViewById(R.id.listTournaments);
-
         registerForContextMenu(lvTournaments);
+
+        lvTournaments.setOnItemClickListener((parent, view, position, id) -> {
+
+            Tournament t = (Tournament) lvTournaments.getItemAtPosition(position);
+            Intent i = new Intent(getActivity(), TournamentDetails.class).putExtra("tournament", t);
+            startActivity(i);
+
+        });
 
         fab = rootView.findViewById(R.id.fab);
 

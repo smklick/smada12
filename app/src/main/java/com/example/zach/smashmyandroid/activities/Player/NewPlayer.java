@@ -10,9 +10,9 @@ import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
-import com.example.zach.smashmyandroid.local.DataSource.PlayerDataSource;
-import com.example.zach.smashmyandroid.local.Repository.PlayerRepository;
-import com.example.zach.smashmyandroid.local.models.Player;
+import com.example.zach.smashmyandroid.database.local.DataSource.PlayerDataSource;
+import com.example.zach.smashmyandroid.database.local.Repository.PlayerRepository;
+import com.example.zach.smashmyandroid.database.local.models.Player;
 
 import java.util.List;
 

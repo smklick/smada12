@@ -20,9 +20,9 @@ import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
-import com.example.zach.smashmyandroid.local.DataSource.PlayerDataSource;
-import com.example.zach.smashmyandroid.local.Repository.PlayerRepository;
-import com.example.zach.smashmyandroid.local.models.Player;
+import com.example.zach.smashmyandroid.database.local.DataSource.PlayerDataSource;
+import com.example.zach.smashmyandroid.database.local.Repository.PlayerRepository;
+import com.example.zach.smashmyandroid.database.local.models.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +36,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-
-import static android.app.Activity.RESULT_OK;
 
 public class FragmentPlayerList extends Fragment {
     // TODO: Rename parameter arguments, choose names that match

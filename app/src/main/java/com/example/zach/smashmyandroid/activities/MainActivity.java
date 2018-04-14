@@ -18,12 +18,12 @@ import com.example.zach.smashmyandroid.R;
 import com.example.zach.smashmyandroid.activities.Player.FragmentPlayerList;
 import com.example.zach.smashmyandroid.activities.Tournament.FragmentTournamentList;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
-import com.example.zach.smashmyandroid.local.DataSource.PlayerDataSource;
-import com.example.zach.smashmyandroid.local.DataSource.TournamentDataSource;
-import com.example.zach.smashmyandroid.local.Repository.PlayerRepository;
-import com.example.zach.smashmyandroid.local.Repository.TournamentRepository;
-import com.example.zach.smashmyandroid.local.models.Player;
-import com.example.zach.smashmyandroid.local.models.Tournament;
+import com.example.zach.smashmyandroid.database.local.DataSource.PlayerDataSource;
+import com.example.zach.smashmyandroid.database.local.DataSource.TournamentDataSource;
+import com.example.zach.smashmyandroid.database.local.Repository.PlayerRepository;
+import com.example.zach.smashmyandroid.database.local.Repository.TournamentRepository;
+import com.example.zach.smashmyandroid.database.local.models.Player;
+import com.example.zach.smashmyandroid.database.local.models.Tournament;
 
 import java.util.ArrayList;
 

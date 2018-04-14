@@ -8,23 +8,20 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
 import com.example.zach.smashmyandroid.activities.Tournament.TournamentDetails;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
-import com.example.zach.smashmyandroid.local.DataSource.PlayerDataSource;
-import com.example.zach.smashmyandroid.local.Repository.PlayerRepository;
-import com.example.zach.smashmyandroid.local.models.Match;
-import com.example.zach.smashmyandroid.local.models.Player;
-import com.example.zach.smashmyandroid.local.models.Tournament;
+import com.example.zach.smashmyandroid.database.local.DataSource.PlayerDataSource;
+import com.example.zach.smashmyandroid.database.local.Repository.PlayerRepository;
+import com.example.zach.smashmyandroid.database.local.models.Match;
+import com.example.zach.smashmyandroid.database.local.models.Player;
+import com.example.zach.smashmyandroid.database.local.models.Tournament;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
