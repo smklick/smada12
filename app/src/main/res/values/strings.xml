@@ -2,5 +2,8 @@
     <string name="app_name">SmashMyAndroid</string>
     <string name="yes">Yes</string>
     <string name="title_activity_tournament_manager">TournamentManager</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     tring>
 </resources>

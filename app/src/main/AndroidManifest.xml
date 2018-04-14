@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,8 @@
         <activity android:name=".activities.Player.PlayerProfile" />
         <activity android:name=".activities.Tournament.TournamentManager" />
         <activity android:name=".activities.Tournament.NewTournament" />
-        <activity android:name=".activities.Tournament.TournamentDetails"></activity>
+        <activity android:name=".activities.Tournament.TournamentDetails" />
+        <activity android:name=".activities.Dummy"></activity>
     </application>
 
 </manifest>

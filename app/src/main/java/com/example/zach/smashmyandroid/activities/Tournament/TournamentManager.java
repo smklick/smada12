@@ -12,17 +12,15 @@ import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
-import com.example.zach.smashmyandroid.local.DataSource.TournamentDataSource;
-import com.example.zach.smashmyandroid.local.Repository.TournamentRepository;
-import com.example.zach.smashmyandroid.local.models.Tournament;
+import com.example.zach.smashmyandroid.database.local.DataSource.TournamentDataSource;
+import com.example.zach.smashmyandroid.database.local.Repository.TournamentRepository;
+import com.example.zach.smashmyandroid.database.local.models.Tournament;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -60,7 +58,7 @@ public class TournamentManager extends AppCompatActivity {
         lvTournaments.setAdapter(adapter);
 
         SmaDatabase smaDb = SmaDatabase.getInstance(this);
-        tournamentRepository = TournamentRepository.getINSTANCE(TournamentDataSource.getInstance(smaDb.tournamentDao()));
+        tournamentRepository = TournamentRepository.getInstance(TournamentDataSource.getInstance(smaDb.tournamentDao()));
 
         loadData();
 

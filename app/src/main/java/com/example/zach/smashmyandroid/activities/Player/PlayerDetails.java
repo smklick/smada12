@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.zach.smashmyandroid.R;
-import com.example.zach.smashmyandroid.local.models.Player;
+import com.example.zach.smashmyandroid.database.local.models.Player;
 
 public class PlayerDetails extends AppCompatActivity {
 

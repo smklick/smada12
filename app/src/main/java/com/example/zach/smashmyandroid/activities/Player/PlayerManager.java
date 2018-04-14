@@ -12,16 +12,18 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
-import com.example.zach.smashmyandroid.local.Repository.PlayerRepository;
-import com.example.zach.smashmyandroid.local.DataSource.PlayerDataSource;
-import com.example.zach.smashmyandroid.local.models.Player;
+import com.example.zach.smashmyandroid.database.local.Repository.PlayerRepository;
+import com.example.zach.smashmyandroid.database.local.DataSource.PlayerDataSource;
+import com.example.zach.smashmyandroid.database.local.models.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +47,7 @@ public class PlayerManager extends AppCompatActivity {
     static final int NEW_USER = 2;
     static final int VIEW_USER = 3;
 
-    List<Player> playersList = new ArrayList<>();
+    ArrayList<Player> playersList = new ArrayList<>();
     ArrayAdapter adapter;
 
     private CompositeDisposable compositeDisposable;
@@ -62,7 +64,24 @@ public class PlayerManager extends AppCompatActivity {
         lvPlayers = (ListView) findViewById(R.id.listPlayers);
         addPlayer = (FloatingActionButton) findViewById(R.id.fab);
 
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, playersList);
+        adapter = new ArrayAdapter<Player>(this, 0, playersList) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                Player p = playersList.get(position);
+
+                if (convertView == null) {
+                    convertView = getLayoutInflater()
+                            .inflate(R.layout.player_list_item, null, false);
+                }
+                TextView playerName = convertView.findViewById(R.id.playerName);
+                TextView smashName = convertView.findViewById(R.id.smashName);
+
+                playerName.setText(p.getFirstName() + " " + p.getLastName());
+                smashName.setText(p.getSmashName());
+
+                return convertView;
+            }
+        };
         registerForContextMenu(lvPlayers);
         lvPlayers.setAdapter(adapter);
 
@@ -182,7 +201,7 @@ public class PlayerManager extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     // Clicking the clear button deletes all users from the list
