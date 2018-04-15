@@ -1,13 +1,17 @@
 package com.example.zach.smashmyandroid.activities.Match;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
@@ -58,7 +62,15 @@ public class NewMatch extends AppCompatActivity {
 
         submit = findViewById(R.id.submit);
 
-        adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, playerList);
+        adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, playerList){
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                 TextView spin = (TextView) super.getView(position, convertView, parent);
+                 spin.setTextColor(getResources().getColor(R.color.colorAccent));
+                return spin;
+            }
+        };
         winnerDropdown.setAdapter(adapter);
         loserDropdown.setAdapter(adapter);
 
