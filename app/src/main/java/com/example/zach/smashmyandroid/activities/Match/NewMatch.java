@@ -1,19 +1,20 @@
 package com.example.zach.smashmyandroid.activities.Match;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
-import com.example.zach.smashmyandroid.activities.Tournament.TournamentDetails;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
+import com.example.zach.smashmyandroid.database.local.DataSource.MatchDataSource;
 import com.example.zach.smashmyandroid.database.local.DataSource.PlayerDataSource;
+import com.example.zach.smashmyandroid.database.local.Repository.MatchRepository;
 import com.example.zach.smashmyandroid.database.local.Repository.PlayerRepository;
 import com.example.zach.smashmyandroid.database.local.models.Match;
 import com.example.zach.smashmyandroid.database.local.models.Player;
@@ -25,6 +26,7 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -35,9 +37,11 @@ public class NewMatch extends AppCompatActivity {
 
     private CompositeDisposable compositeDisposable;
     private PlayerRepository playerRepository;
+    private MatchRepository matchRepository;
     private Spinner winnerDropdown;
     private Spinner loserDropdown;
     private Button submit;
+    private TextView tournamentId;
 
     private Tournament tournament;
 
@@ -58,12 +62,17 @@ public class NewMatch extends AppCompatActivity {
 
         submit = findViewById(R.id.submit);
 
+        tournamentId = findViewById(R.id.tournId);
+        tournamentId.setText("Tournament ID: " + tournament.getId());
+
         adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, playerList);
         winnerDropdown.setAdapter(adapter);
         loserDropdown.setAdapter(adapter);
 
         SmaDatabase smaDb = SmaDatabase.getInstance(this);
         playerRepository = PlayerRepository.getInstance(PlayerDataSource.getInstance(smaDb.playerDao()));
+
+        matchRepository = MatchRepository.getInstance(MatchDataSource.getInstance(smaDb.matchDao()));
 
         loadData();
 
@@ -98,11 +107,14 @@ public class NewMatch extends AppCompatActivity {
                 if(winner.getId() != loser.getId()){
                     Match m = new Match(tournament.getId(), winner.getId(), loser.getId());
 
-                    Intent i = new Intent(NewMatch.this, TournamentDetails.class).putExtra("match", m).putExtra("winner", winner).putExtra("loser", loser);
+                    //Intent i = new Intent(NewMatch.this, TournamentDetails.class).putExtra("match", m).putExtra("winner", winner).putExtra("loser", loser);
 
-                    Toast.makeText(NewMatch.this, "TournamentID: " + m.getTournamentId() + " WinnerID: " + m.getWinnerId() + " LoserID: " + m.getLoserId(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(NewMatch.this, "TournamentID: " + m.getTournamentId() + " WinnerID: " + m.getWinnerId() + " LoserID: " + m.getLoserId(), Toast.LENGTH_SHORT).show();
 
-                    setResult(RESULT_OK, i);
+                    //setResult(RESULT_OK, i);
+
+                    createMatch(m);
+
                     finish();
                 }else {
                     Toast.makeText(NewMatch.this, "Players cannot play against themselves!", Toast.LENGTH_SHORT).show();
@@ -110,6 +122,28 @@ public class NewMatch extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void createMatch(Match m) {
+        Disposable disposable = io.reactivex.Observable.create(e -> {
+            matchRepository.insert(m);
+            e.onComplete();
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Consumer() {
+                               @Override
+                               public void accept(Object o) throws Exception {
+                                   Toast.makeText(NewMatch.this, "Match Added. Tournament ID: " + m.getTournamentId() , Toast.LENGTH_SHORT).show();
+                               }
+                           }, throwable -> Toast.makeText(NewMatch.this, "" + throwable.getMessage(), Toast.LENGTH_SHORT).show(),
+                        new Action() {
+                            @Override
+                            public void run() throws Exception {
+                                loadData();
+                            }
+                        }
+                );
+        compositeDisposable.add(disposable);
     }
 
     private void loadData() {

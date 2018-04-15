@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_marginTop="15dp"
     android:layout_marginBottom="15dp">
@@ -11,6 +18,7 @@
         android:id="@+id/winnerName"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:textColor="@color/colorPrimaryDark"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Winner"/>
 
@@ -19,6 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:text="v.s."/>
@@ -28,7 +37,17 @@
         android:id="@+id/loserName"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:textColor="@color/colorPrimaryDark"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Loser"/>
+
+</LinearLayout>
+
+    <TextView
+        android:id="@+id/matchId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Match ID: "
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
 </LinearLayout>

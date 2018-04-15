@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
-import com.example.zach.smashmyandroid.activities.Match.FragmentMatchList;
 import com.example.zach.smashmyandroid.activities.Match.NewMatch;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
 import com.example.zach.smashmyandroid.database.local.DataSource.MatchDataSource;
@@ -35,6 +37,7 @@ public class TournamentDetails extends AppCompatActivity {
 
     private TextView tournamentName;
     private FloatingActionButton addMatch;
+    private ListView lvMatches;
 
     ArrayList<Match> matchList = new ArrayList<>();
     ArrayAdapter adapter;
@@ -42,8 +45,7 @@ public class TournamentDetails extends AppCompatActivity {
     private CompositeDisposable compositeDisposable;
     private SmaDatabase smaDb;
     private MatchRepository matchRepository;
-    private FragmentMatchList matchListFragment;
-    private Tournament tournament;
+
 
 
 
@@ -52,29 +54,53 @@ public class TournamentDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tournament_details);
 
-        smaDb = SmaDatabase.getInstance(this);
-        matchRepository = MatchRepository.getInstance(MatchDataSource.getInstance(smaDb.matchDao()));
+        tournamentName = findViewById(R.id.tournamentName);
 
-        tournament = getIntent().getExtras().getParcelable("tournament");
+        final Tournament tournament = getIntent().getExtras().getParcelable("tournament");
+
+        tournamentName.setText(tournament.getName().toString());
 
         compositeDisposable = new CompositeDisposable();
 
-        tournamentName = findViewById(R.id.tournamentName);
-        tournamentName.setText(tournament.getName().toString());
+        lvMatches = findViewById(R.id.tournamentMatchList);
 
+        SmaDatabase smaDb = SmaDatabase.getInstance(this);
+        matchRepository = MatchRepository.getInstance(MatchDataSource.getInstance(smaDb.matchDao()));
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        loadData(tournament.getId());
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         addMatch = findViewById(R.id.fab);
 
-        SmaDatabase smaDb = SmaDatabase.getInstance(this);
-        matchRepository = MatchRepository.getInstance(MatchDataSource.getInstance(smaDb.matchDao()));
-        loadData();
 
-        matchListFragment = FragmentMatchList.newInstance(matchList);
-        getSupportFragmentManager().beginTransaction().add(R.id.contentFrame, matchListFragment);
+        adapter = new ArrayAdapter<Match>(this, 0, matchList) {
 
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                Match m = matchList.get(position);
+
+                if (convertView == null) {
+                    convertView = getLayoutInflater()
+                            .inflate(R.layout.match_list_item, null, false);
+                }
+                TextView winnerName = convertView.findViewById(R.id.winnerName);
+                TextView loserName = convertView.findViewById(R.id.loserName);
+                TextView matchId = convertView.findViewById(R.id.matchId);
+
+                winnerName.setText(Integer.toString(m.getWinnerId()));
+                loserName.setText(Integer.toString(m.getLoserId()));
+                matchId.setText("Match ID: " + Integer.toString(m.getId()));
+                return convertView;
+            }
+        };
+
+        registerForContextMenu(lvMatches);
+        lvMatches.setAdapter(adapter);
+        Toast.makeText(TournamentDetails.this, "Details ID: " + tournament.getId(), Toast.LENGTH_SHORT).show();
+        loadData(tournament.getId());
 
         addMatch.setOnClickListener(v -> {
             Intent i = new Intent(TournamentDetails.this, NewMatch.class).putExtra("tournament", tournament);
@@ -83,19 +109,22 @@ public class TournamentDetails extends AppCompatActivity {
 
     }
 
-    private void loadData() {
-        Disposable matchDisposable = matchRepository.getMatchesByTournament(tournament.getId())
+    private void loadData(int id) {
+        Disposable matchDisposable = matchRepository.getMatchesByTournament(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<List<Match>>() {
                     @Override
                     public void accept(List<Match> matches) throws Exception {
+
                         onGetTournamentMatchesSuccess(matches);
+
+                       // Toast.makeText(TournamentDetails.this, "Loaded matches!", Toast.LENGTH_SHORT).show();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(TournamentDetails.this, "TournamentDetails: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+
                     }
                 });
 
@@ -105,19 +134,7 @@ public class TournamentDetails extends AppCompatActivity {
     private void onGetTournamentMatchesSuccess(List<Match> matches) {
         matchList.clear();
         matchList.addAll(matches);
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == NEW_MATCH) {
-            if(resultCode == RESULT_OK) {
-                final Match m = data.getParcelableExtra("match");
-
-                Toast.makeText(TournamentDetails.this, "id: " + m.getId() + " winnerId: " + m.getWinnerId() + " loserId: " + m.getLoserId(), Toast.LENGTH_SHORT).show();
-
-                createMatch(m);
-                loadData();
-            }
-        }
+        adapter.notifyDataSetChanged();
     }
 
     private void createMatch(final Match m) {
@@ -143,11 +160,10 @@ public class TournamentDetails extends AppCompatActivity {
                         new Action() {
                             @Override
                             public void run() throws Exception {
-                                loadData();
+                                //loadData(tournament.getId());
                             }
                         }
                 );
-        loadData();
         compositeDisposable.add(disposable);
     }
 }
