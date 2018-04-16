@@ -45,11 +45,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/tournamentName"
-            android:layout_margin="25dp"
+            android:layout_margin="15dp"
             android:background="@color/colorSecondaryDark"
+            android:layout_gravity="bottom"
             android:id="@+id/tournamentMatchList"/>
-
-
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -58,7 +57,6 @@
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
         android:backgroundTint="@color/colorAccent"
         android:src="@drawable/add"
         android:layout_margin="10dp"

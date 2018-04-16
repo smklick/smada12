@@ -21,6 +21,7 @@ import com.example.zach.smashmyandroid.database.local.models.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -41,6 +42,8 @@ public class PlayerProfile extends AppCompatActivity {
     ArrayAdapter adapter;
 
     private Player p;
+    private int numberOfWins = 0;
+    private int numberOfLosses = 0;
 
     private CompositeDisposable mCompositeDisposable;
     private MatchRepository matchRepository;
@@ -71,6 +74,15 @@ public class PlayerProfile extends AppCompatActivity {
         playerRepository = PlayerRepository.getInstance(PlayerDataSource.getInstance(mDb.playerDao()));
         loadData(player.getId());
 
+        for(Match m : matchList) {
+            if(m.getWinnerId() == player.getId()) {
+                this.numberOfWins += 1;
+            } else {
+                this.numberOfLosses += 1;
+            }
+        }
+
+
         // Create new array adapter
         adapter = new ArrayAdapter<Match>(this, 0, matchList) {
 
@@ -78,6 +90,11 @@ public class PlayerProfile extends AppCompatActivity {
             public View getView(int position, View convertView, ViewGroup parent) {
 
                 Match m = matchList.get(position);
+
+                final Player[] loser = new Player[1];
+                final Player[] winner = new Player[1];
+                Observable.just(mDb).subscribeOn(Schedulers.io()).subscribe(smaDb -> winner[0] = playerRepository.loadUserById(m.getWinnerId()));
+                Observable.just(mDb).subscribeOn(Schedulers.io()).subscribe(smaDb -> loser[0] = playerRepository.loadUserById(m.getLoserId()));
 
                 if (convertView == null) {
                     convertView = getLayoutInflater()

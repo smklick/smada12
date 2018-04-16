@@ -52,6 +52,8 @@
             android:layout_marginTop="25dp"
             android:layout_weight="1"
             android:backgroundTint="@color/colorAccent"
+            android:background="@color/colorPrimaryDark"
+            android:popupBackground="@color/colorPrimaryDark"
             android:fadingEdge="horizontal"
             android:spinnerMode="dialog" />
 
@@ -70,10 +72,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:popupBackground="@color/colorPrimaryDark"
             android:layout_marginBottom="25dp"
             android:layout_marginTop="25dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/colorAccent"
+            android:backgroundTint="@color/colorSecondaryDark"
+            android:background="@color/colorPrimaryDark"
             android:fadingEdge="horizontal"
             android:spinnerMode="dialog" />
 

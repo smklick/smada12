@@ -1,6 +1,5 @@
 package com.example.zach.smashmyandroid.activities.Match;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -48,8 +47,8 @@ public class NewMatch extends AppCompatActivity {
     private Spinner loserDropdown;
     private Button submit;
     private TextView tournamentId;
-    private int selectedIndex = -1;
-    private int selectedIndex2 = -1;
+    private int winnerIndex = -1;
+    private int loserIndex = -1;
 
     private Tournament tournament;
 
@@ -79,6 +78,7 @@ public class NewMatch extends AppCompatActivity {
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 TextView spin = (TextView) super.getView(position, convertView, parent);
                 spin.setTextColor(getResources().getColor(R.color.colorPrimary));
+                spin.setTextSize(24);
                 return spin;
             }
 
@@ -88,12 +88,16 @@ public class NewMatch extends AppCompatActivity {
                 TextView spin = (TextView) super.getDropDownView(position, convertView, parent);
                 spin.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 spin.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                //spin.setHeight(60);
+                spin.setTextSize(24);
+                if (position == winnerIndex) {
 
-                if (position == selectedIndex) {
                     spin.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    spin.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 }
-                if (position == selectedIndex2) {
-                    spin.setBackgroundColor(getResources().getColor(R.color.colorSecondaryAccent));
+                if (position == loserIndex) {
+                    spin.setBackgroundColor(getResources().getColor(R.color.colorSecondaryDark));
+                    spin.setTextColor(getResources().getColor(R.color.colorPrimary));
                 }
                 return spin;
             }
@@ -112,7 +116,7 @@ public class NewMatch extends AppCompatActivity {
         winnerDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedIndex = position;
+                winnerIndex = position;
                 winner = (Player) winnerDropdown.getSelectedItem();
 
             }
@@ -126,7 +130,7 @@ public class NewMatch extends AppCompatActivity {
         loserDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedIndex2 = position;
+                loserIndex = position;
                 loser = (Player) loserDropdown.getSelectedItem();
             }
 
@@ -189,7 +193,7 @@ public class NewMatch extends AppCompatActivity {
                 .subscribe(new Consumer<List<Player>>() {
                     @Override
                     public void accept(List<Player> players) throws Exception {
-                        onGetAllPlayersSuccess(playersFmast);
+                        onGetAllPlayersSuccess(players);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
