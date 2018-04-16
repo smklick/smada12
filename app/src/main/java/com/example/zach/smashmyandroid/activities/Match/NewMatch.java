@@ -1,8 +1,13 @@
 package com.example.zach.smashmyandroid.activities.Match;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,6 +40,7 @@ public class NewMatch extends AppCompatActivity {
     List<Player> playerList = new ArrayList<>();
     ArrayAdapter<Player> adapter;
 
+
     private CompositeDisposable compositeDisposable;
     private PlayerRepository playerRepository;
     private MatchRepository matchRepository;
@@ -42,6 +48,8 @@ public class NewMatch extends AppCompatActivity {
     private Spinner loserDropdown;
     private Button submit;
     private TextView tournamentId;
+    private int selectedIndex = -1;
+    private int selectedIndex2 = -1;
 
     private Tournament tournament;
 
@@ -61,11 +69,36 @@ public class NewMatch extends AppCompatActivity {
         loserDropdown = findViewById(R.id.loser);
 
         submit = findViewById(R.id.submit);
-
+      
         tournamentId = findViewById(R.id.tournId);
         tournamentId.setText("Tournament ID: " + tournament.getId());
 
-        adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, playerList);
+        adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, playerList) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                TextView spin = (TextView) super.getView(position, convertView, parent);
+                spin.setTextColor(getResources().getColor(R.color.colorPrimary));
+                return spin;
+            }
+
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                // View itemView = super.getDropDownView(position, convertView, parent);
+                TextView spin = (TextView) super.getDropDownView(position, convertView, parent);
+                spin.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                spin.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+                if (position == selectedIndex) {
+                    spin.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                }
+                if (position == selectedIndex2) {
+                    spin.setBackgroundColor(getResources().getColor(R.color.colorSecondaryAccent));
+                }
+                return spin;
+            }
+        };
+
         winnerDropdown.setAdapter(adapter);
         loserDropdown.setAdapter(adapter);
 
@@ -79,7 +112,9 @@ public class NewMatch extends AppCompatActivity {
         winnerDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedIndex = position;
                 winner = (Player) winnerDropdown.getSelectedItem();
+
             }
 
             @Override
@@ -91,6 +126,7 @@ public class NewMatch extends AppCompatActivity {
         loserDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedIndex2 = position;
                 loser = (Player) loserDropdown.getSelectedItem();
             }
 
@@ -104,7 +140,7 @@ public class NewMatch extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(winner.getId() != loser.getId()){
+                if (winner.getId() != loser.getId()) {
                     Match m = new Match(tournament.getId(), winner.getId(), loser.getId());
 
                     //Intent i = new Intent(NewMatch.this, TournamentDetails.class).putExtra("match", m).putExtra("winner", winner).putExtra("loser", loser);
@@ -116,7 +152,7 @@ public class NewMatch extends AppCompatActivity {
                     createMatch(m);
 
                     finish();
-                }else {
+                } else {
                     Toast.makeText(NewMatch.this, "Players cannot play against themselves!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -153,7 +189,7 @@ public class NewMatch extends AppCompatActivity {
                 .subscribe(new Consumer<List<Player>>() {
                     @Override
                     public void accept(List<Player> players) throws Exception {
-                        onGetAllPlayersSuccess(players);
+                        onGetAllPlayersSuccess(playersFmast);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
