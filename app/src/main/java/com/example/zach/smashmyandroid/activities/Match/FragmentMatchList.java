@@ -1,34 +1,41 @@
 package com.example.zach.smashmyandroid.activities.Match;
 
-import android.support.v4.app.Fragment;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
+import com.example.zach.smashmyandroid.database.SmaDatabase;
+import com.example.zach.smashmyandroid.database.local.DataSource.MatchDataSource;
+import com.example.zach.smashmyandroid.database.local.Repository.MatchRepository;
 import com.example.zach.smashmyandroid.database.local.models.Match;
+import com.example.zach.smashmyandroid.database.local.models.Tournament;
 
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link FragmentMatchList.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link FragmentMatchList#newInstance} factory method to
- * create an instance of this fragment.
- */
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 public class FragmentMatchList extends Fragment {
 
-    private ArrayList<Match> matches = new ArrayList<>();
+    private ArrayList<Match> matchList = new ArrayList<>();
     private ListView lvMatches;
-    private OnFragmentInteractionListener mListener;
     private ArrayAdapter adapter;
+    private Tournament tournament;
+    private CompositeDisposable compositeDisposable;
+
+    private MatchRepository matchRepository;
+    private SmaDatabase smaDb;
 
     public FragmentMatchList() {
         // Required empty public constructor
@@ -37,7 +44,7 @@ public class FragmentMatchList extends Fragment {
     public static FragmentMatchList newInstance(ArrayList<Match> matches) {
         FragmentMatchList fragment = new FragmentMatchList();
         Bundle args = new Bundle();
-        args.putParcelableArrayList("matches", matches);
+        args.putParcelableArrayList("matchList", matches);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,21 +53,58 @@ public class FragmentMatchList extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        compositeDisposable = new CompositeDisposable();
+
         if (getArguments() != null) {
-            matches = getArguments().getParcelableArrayList("matches");
+            matchList = getArguments().getParcelable("matchList");
         }
 
-        adapter = new ArrayAdapter<Match>(getActivity(), 0, matches) {
+        smaDb = SmaDatabase.getInstance(getActivity());
+        matchRepository = MatchRepository.getInstance(MatchDataSource.getInstance(smaDb.matchDao()));
+
+        adapter = new ArrayAdapter<Match>(getActivity(), 0, matchList) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
 
+                Match m = matchList.get(position);
+
                 if(convertView == null) {
-                    convertView = getLayoutInflater().inflate(R.layout.tournament_list_item, null, false);
+                    convertView = getLayoutInflater().inflate(R.layout.match_list_item, null, false);
                 }
 
+                TextView winner = convertView.findViewById(R.id.winnerName);
+                TextView loser = convertView.findViewById(R.id.loserName);
+
+                winner.setText(m.getWinnerId());
+                loser.setText(m.getLoserId());
                 return convertView;
             }
         };
+        loadData(tournament);
+    }
+
+    private void loadData(Tournament tournament) {
+        Disposable disposable = matchRepository.getMatchesByTournament(tournament.getId())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Consumer<List<Match>>() {
+                    @Override
+                    public void accept(List<Match> matches) throws Exception {
+                        onGetTournamentMatchesSuccess(matches);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Toast.makeText(getActivity(), "" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+        compositeDisposable.add(disposable);
+    }
+
+    private void onGetTournamentMatchesSuccess(List<Match> matches) {
+        this.matchList.clear();
+        this.matchList.addAll(matches);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -69,39 +113,9 @@ public class FragmentMatchList extends Fragment {
          ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.match_list, container, false);
 
         lvMatches = rootView.findViewById(R.id.matchList);
-
+        lvMatches.setAdapter(adapter);
+        registerForContextMenu(lvMatches);
         return rootView;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

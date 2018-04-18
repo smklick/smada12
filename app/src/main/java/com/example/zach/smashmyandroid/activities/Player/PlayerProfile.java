@@ -1,7 +1,7 @@
 package com.example.zach.smashmyandroid.activities.Player;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -10,10 +10,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zach.smashmyandroid.R;
-import com.example.zach.smashmyandroid.database.local.DataSource.PlayerDataSource;
-import com.example.zach.smashmyandroid.database.local.Repository.MatchRepository;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
 import com.example.zach.smashmyandroid.database.local.DataSource.MatchDataSource;
+import com.example.zach.smashmyandroid.database.local.DataSource.PlayerDataSource;
+import com.example.zach.smashmyandroid.database.local.Repository.MatchRepository;
 import com.example.zach.smashmyandroid.database.local.Repository.PlayerRepository;
 import com.example.zach.smashmyandroid.database.local.models.Match;
 import com.example.zach.smashmyandroid.database.local.models.Player;
@@ -42,6 +42,8 @@ public class PlayerProfile extends AppCompatActivity {
     ArrayAdapter adapter;
 
     private Player p;
+    private int numberOfWins = 0;
+    private int numberOfLosses = 0;
 
     private CompositeDisposable mCompositeDisposable;
     private MatchRepository matchRepository;
@@ -72,17 +74,27 @@ public class PlayerProfile extends AppCompatActivity {
         playerRepository = PlayerRepository.getInstance(PlayerDataSource.getInstance(mDb.playerDao()));
         loadData(player.getId());
 
+        for(Match m : matchList) {
+            if(m.getWinnerId() == player.getId()) {
+                this.numberOfWins += 1;
+            } else {
+                this.numberOfLosses += 1;
+            }
+        }
+
+
         // Create new array adapter
         adapter = new ArrayAdapter<Match>(this, 0, matchList) {
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
+
                 Match m = matchList.get(position);
+
                 final Player[] loser = new Player[1];
                 final Player[] winner = new Player[1];
                 Observable.just(mDb).subscribeOn(Schedulers.io()).subscribe(smaDb -> winner[0] = playerRepository.loadUserById(m.getWinnerId()));
                 Observable.just(mDb).subscribeOn(Schedulers.io()).subscribe(smaDb -> loser[0] = playerRepository.loadUserById(m.getLoserId()));
-
 
                 if (convertView == null) {
                     convertView = getLayoutInflater()
@@ -90,10 +102,11 @@ public class PlayerProfile extends AppCompatActivity {
                 }
                 TextView winnerName = convertView.findViewById(R.id.winnerName);
                 TextView loserName = convertView.findViewById(R.id.loserName);
+                TextView matchId = convertView.findViewById(R.id.matchId);
 
-                winnerName.setText(winner[0].getSmashName());
-                loserName.setText(loser[0].getSmashName());
-
+                winnerName.setText(Integer.toString(m.getWinnerId()));
+                loserName.setText(Integer.toString(m.getLoserId()));
+                matchId.setText("Tournament ID: " + Integer.toString(m.getTournamentId()));
                 return convertView;
             }
         };

@@ -8,7 +8,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark">
 
         <TableLayout
             android:id="@+id/summary"
@@ -28,7 +29,8 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:layout_marginTop="5dp"
-                    android:text="TextView"
+                    android:text="Player Name"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="36sp"
                     android:textStyle="bold" />
             </TableRow>
@@ -40,14 +42,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
+                    android:textColor="@color/colorPrimary"
                     android:layout_marginRight="15dp"
-                    android:text="TextView"
+                    android:text="Smash Name"
                     android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/rank"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:textColor="@color/colorPrimary"
                     android:text="700"
                     android:textAlignment="textEnd"
                     android:textSize="24sp" />
@@ -55,6 +59,49 @@
 
         </TableLayout>
 
+        <TableLayout
+            android:id="@+id/playerStats"
+            android:layout_below="@id/summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp">
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:text="Wins: "/>
+
+                <TextView
+                    android:id="@+id/winCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:text="42"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:text="Losses: "/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:text="8"/>
+            </TableRow>
+        </TableLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/playerStats">
         <ListView
             android:id="@+id/matches"
             android:layout_width="match_parent"
@@ -64,7 +111,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="15dp" />
-
+</LinearLayout>
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

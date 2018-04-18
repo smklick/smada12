@@ -15,10 +15,24 @@
         android:elevation="1dp"
         android:gravity="center">
 
+        <TextView
+            android:id="@+id/tournId"
+            android:layout_gravity="top"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:text="Tournament ID: "
+            android:textColor="@color/colorAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/versus"/>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -38,6 +52,8 @@
             android:layout_marginTop="25dp"
             android:layout_weight="1"
             android:backgroundTint="@color/colorAccent"
+            android:background="@color/colorPrimaryDark"
+            android:popupBackground="@color/colorPrimaryDark"
             android:fadingEdge="horizontal"
             android:spinnerMode="dialog" />
 
@@ -56,10 +72,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:popupBackground="@color/colorPrimaryDark"
             android:layout_marginBottom="25dp"
             android:layout_marginTop="25dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/colorAccent"
+            android:backgroundTint="@color/colorSecondaryDark"
+            android:background="@color/colorPrimaryDark"
             android:fadingEdge="horizontal"
             android:spinnerMode="dialog" />
 

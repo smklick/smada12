@@ -34,22 +34,22 @@ public class MatchRepository implements IMatchDataSource {
 
     @Override
     public Flowable<List<Match>> getAllMatches() {
-        return getAllMatches();
+        return mLocalDataSource.getAllMatches();
     }
 
     @Override
     public Flowable<List<Match>> getMatch(int id) {
-        return getMatchesByUser(id);
+        return mLocalDataSource.getMatchesByUser(id);
     }
 
     @Override
     public Flowable<List<Match>> getMatchesByTournament(int id) {
-        return getMatchesByUser(id);
+        return mLocalDataSource.getMatchesByTournament(id);
     }
 
     @Override
     public Flowable<List<Match>> getPlayerMatchesByTournament(int tournamentId, int playerId) {
-        return getPlayerMatchesByTournament(tournamentId, playerId);
+        return mLocalDataSource.getPlayerMatchesByTournament(tournamentId, playerId);
     }
 
     @Override

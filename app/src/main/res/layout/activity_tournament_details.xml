@@ -23,33 +23,33 @@
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_below="@+id/appbar"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/tournamentName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/appbar"
-        android:layout_gravity="center"
-        android:layout_marginTop="25dp"
-        android:background="@color/colorSecondaryDark"
-        android:textColor="@color/colorAccent"
-        android:text="TOURNAMENT NAME"
-        android:textSize="36dp" />
-
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tournamentName"
-        android:id="@+id/contentFrame"
-        android:layout_margin="25dp">
-    </FrameLayout>
+        android:layout_below="@+id/appbar"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tournamentName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/appbar"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:background="@color/colorSecondaryDark"
+            android:textColor="@color/colorAccent"
+            android:text="TOURNAMENT NAME"
+            android:textSize="36dp" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tournamentName"
+            android:layout_margin="15dp"
+            android:background="@color/colorSecondaryDark"
+            android:layout_gravity="bottom"
+            android:id="@+id/tournamentMatchList"/>
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -57,7 +57,6 @@
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
         android:backgroundTint="@color/colorAccent"
         android:src="@drawable/add"
         android:layout_margin="10dp"
