@@ -6,3 +6,19 @@
     <color name="colorSecondaryDark">#4A0227</color>
     <color name="colorSecondaryAccent">#613443</color>
 </resources>
+<!--
+<resources>
+    <color name="colorPrimary">#FFEDDF</color>
+    <color name="colorAccent">#E4B289</color>
+    <color name="colorPrimaryDark">#371900</color>
+    <color name="colorSecondaryDark">#703707</color>
+    <color name="colorSecondaryAccent">#613443</color>
+</resources>-->
+<!--
+<resources>
+    <color name="colorPrimary">#B0FBE8</color>
+    <color name="colorAccent">#55A491</color>
+    <color name="colorPrimaryDark">#000302</color>
+    <color name="colorSecondaryDark">#08392D</color>
+    <color name="colorSecondaryAccent">#613443</color>
+</resources>-->

@@ -50,20 +50,30 @@ public class Match implements Parcelable{
     @ColumnInfo(name = "winnerId")
     private int winnerId;
 
+    @ColumnInfo(name = "winnerName")
+    private String winnerName;
+
     @ColumnInfo(name = "loserId")
     private int loserId;
 
-    public Match( int tournamentId, int winnerId, int loserId) {
+    @ColumnInfo(name = "loserName")
+    private String loserName;
+
+    public Match( int tournamentId, int winnerId, String winnerName, int loserId, String loserName) {
         this.tournamentId = tournamentId;
         this.winnerId = winnerId;
+        this.winnerName = winnerName;
         this.loserId = loserId;
+        this.loserName = loserName;
     }
 
     protected Match(Parcel in) {
         id = in.readInt();
         tournamentId = in.readInt();
         winnerId = in.readInt();
+        winnerName = in.readString();
         loserId = in.readInt();
+        loserName = in.readString();
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator(){
@@ -93,6 +103,10 @@ public class Match implements Parcelable{
         this.winnerId = winnerId;
     }
 
+    public String getWinnerName() { return winnerName; }
+
+    public void setWinnerName(String name) { this.winnerName = name;}
+
     public int getLoserId() {
         return loserId;
     }
@@ -100,6 +114,10 @@ public class Match implements Parcelable{
     public void setLoserId(int loserId) {
         this.loserId = loserId;
     }
+
+    public String getLoserName() { return loserName; }
+
+    public void setLoserName(String name) { this.loserName = name; }
 
     @Override
     public int describeContents() {

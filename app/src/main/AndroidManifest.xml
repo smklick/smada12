@@ -20,7 +20,6 @@
         </activity>
         <activity android:name=".activities.Player.PlayerDetails" />
         <activity android:name=".activities.Player.NewPlayer" />
-        <activity android:name=".activities.Player.PlayerManager" />
         <activity android:name=".activities.Match.NewMatch" />
         <activity android:name=".activities.Player.PlayerProfile" />
         <activity android:name=".activities.Tournament.TournamentManager" />

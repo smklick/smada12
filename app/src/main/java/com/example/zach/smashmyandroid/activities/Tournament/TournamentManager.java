@@ -1,9 +1,14 @@
 package com.example.zach.smashmyandroid.activities.Tournament;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +19,7 @@ import com.example.zach.smashmyandroid.R;
 import com.example.zach.smashmyandroid.database.SmaDatabase;
 import com.example.zach.smashmyandroid.database.local.DataSource.TournamentDataSource;
 import com.example.zach.smashmyandroid.database.local.Repository.TournamentRepository;
+import com.example.zach.smashmyandroid.database.local.models.Match;
 import com.example.zach.smashmyandroid.database.local.models.Tournament;
 
 import java.util.ArrayList;
@@ -142,5 +148,72 @@ public class TournamentManager extends AppCompatActivity {
                     }
                 })
         ;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        menu.setHeaderTitle("Select Action:");
+
+        menu.add(Menu.NONE, 0, menu.NONE, "DELETE");
+    }
+
+    // Selecting UPDATE or DELETE fires the appropriate event
+    // UPDATE currently only allows changing of first name
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        final Tournament t = tournamentList.get(info.position);
+        switch (item.getItemId()) {
+            case 0: // Delete Match
+            {
+                new AlertDialog.Builder(TournamentManager.this)
+                        .setMessage("Do you want to delete "+ t.getName())
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteTournament(t);
+                            }
+                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+            }
+            break;
+        }
+        return true;
+    }
+
+    private void deleteTournament(final Tournament t) {
+        Disposable disposable = io.reactivex.Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> e) throws Exception {
+                tournamentRepository.delete(t);
+                e.onComplete();
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Consumer() {
+                               @Override
+                               public void accept(Object o) throws Exception {
+
+                               }
+                           }, new Consumer<Throwable>() {
+                               @Override
+                               public void accept(Throwable throwable) throws Exception {
+                                   Toast.makeText(TournamentManager.this, "" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                               }
+                           },
+                        new Action() {
+                            @Override
+                            public void run() throws Exception {
+                                loadData();
+                            }
+                        }
+                );
+        compositeDisposable.add(disposable);
     }
 }

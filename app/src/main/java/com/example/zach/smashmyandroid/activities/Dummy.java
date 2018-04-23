@@ -69,7 +69,7 @@ public class Dummy extends AppCompatActivity {
         Player nick = new Player("Nick","Roberts","Zoltar", 700);;
         Player noah = new Player("Noah","Bumgardner","VorceShard", 700);;
         Player doug = new Player("Doug","Jenkins","badman", 700);;
-        Player james = new Player("James","Leffert","weedGoku", 700);
+        Player james = new Player("James","Leffert","lamJam", 700);
         Player blake = new Player("Blake", "Mariot", "Mogg", 700);
         Player dan = new Player("Danny", "Hotson", "2muchDogg", 700);
         Player joel = new Player("Joel", "Schmole", "Dangable", 700);
@@ -101,9 +101,9 @@ public class Dummy extends AppCompatActivity {
             newPlayer(p);
         }
 
-        Tournament sma1 = new Tournament("Smash My Ass 1");
-        Tournament sma2 = new Tournament("Smash My Ass 2");
-        Tournament sma3 = new Tournament("Smash My Ass 3");
+        Tournament sma1 = new Tournament("Smash at Central");
+        Tournament sma2 = new Tournament("The Oedipus Duplex");
+        Tournament sma3 = new Tournament("Castle Smash 2");
         Tournament smaIW = new Tournament("Smash at Inkwell");
         Tournament smaIWF = new Tournament("Smash at Inkwell Finals");
 
