@@ -1,8 +1,7 @@
 package com.example.zach.smashmyandroid.activities.Player;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -69,9 +68,7 @@ public class NewPlayer extends AppCompatActivity {
 
                     final Player p = new Player(firstName.getText().toString(), lastName.getText().toString(), smashName.getText().toString(), Integer.parseInt(rank.getText().toString()));
 
-                    Intent i = new Intent(NewPlayer.this, PlayerManager.class).putExtra("player", p);
                     newPlayer(p);
-                    setResult(RESULT_OK, i);
 
                 } else {
                     Toast.makeText(NewPlayer.this, "All fields are required", Toast.LENGTH_SHORT).show();
