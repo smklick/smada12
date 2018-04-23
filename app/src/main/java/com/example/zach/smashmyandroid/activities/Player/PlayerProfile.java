@@ -35,6 +35,8 @@ public class PlayerProfile extends AppCompatActivity {
     TextView name;
     TextView smashName;
     TextView rank;
+    TextView winCount;
+    TextView lossCount;
 
     private ListView lvMatches;
 
@@ -44,7 +46,6 @@ public class PlayerProfile extends AppCompatActivity {
     private Player p;
     private int numberOfWins = 0;
     private int numberOfLosses = 0;
-
     private CompositeDisposable mCompositeDisposable;
     private MatchRepository matchRepository;
     private PlayerRepository playerRepository;
@@ -57,8 +58,12 @@ public class PlayerProfile extends AppCompatActivity {
         name = findViewById(R.id.name);
         smashName = findViewById(R.id.smashName);
         rank = findViewById(R.id.rank);
+        winCount = findViewById(R.id.winCount);
+        lossCount = findViewById(R.id.lossCount);
 
         final Player player = getIntent().getExtras().getParcelable("player");
+
+        p = player;
 
         name.setText(player.getFirstName().toString() + " " + player.getLastName().toString());
         smashName.setText(player.getSmashName().toString());
@@ -74,13 +79,7 @@ public class PlayerProfile extends AppCompatActivity {
         playerRepository = PlayerRepository.getInstance(PlayerDataSource.getInstance(mDb.playerDao()));
         loadData(player.getId());
 
-        for(Match m : matchList) {
-            if(m.getWinnerId() == player.getId()) {
-                this.numberOfWins += 1;
-            } else {
-                this.numberOfLosses += 1;
-            }
-        }
+
 
 
         // Create new array adapter
@@ -91,22 +90,15 @@ public class PlayerProfile extends AppCompatActivity {
 
                 Match m = matchList.get(position);
 
-                final Player[] loser = new Player[1];
-                final Player[] winner = new Player[1];
-                Observable.just(mDb).subscribeOn(Schedulers.io()).subscribe(smaDb -> winner[0] = playerRepository.loadUserById(m.getWinnerId()));
-                Observable.just(mDb).subscribeOn(Schedulers.io()).subscribe(smaDb -> loser[0] = playerRepository.loadUserById(m.getLoserId()));
-
                 if (convertView == null) {
                     convertView = getLayoutInflater()
                             .inflate(R.layout.match_list_item, null, false);
                 }
-                TextView winnerName = convertView.findViewById(R.id.winnerName);
-                TextView loserName = convertView.findViewById(R.id.loserName);
-                TextView matchId = convertView.findViewById(R.id.matchId);
+                TextView winner = convertView.findViewById(R.id.winnerName);
+                TextView loser = convertView.findViewById(R.id.loserName);
 
-                winnerName.setText(Integer.toString(m.getWinnerId()));
-                loserName.setText(Integer.toString(m.getLoserId()));
-                matchId.setText("Tournament ID: " + Integer.toString(m.getTournamentId()));
+                winner.setText(m.getWinnerName());
+                loser.setText(m.getLoserName());
                 return convertView;
             }
         };
@@ -142,6 +134,19 @@ public class PlayerProfile extends AppCompatActivity {
         matchList.clear();;
         matchList.addAll(matches);
         adapter.notifyDataSetChanged();
+
+        for(Match m : matchList) {
+            if(m.getWinnerId() == p.getId()) {
+                this.numberOfWins += 1;
+                //Toast.makeText(PlayerProfile.this, Integer.toString(numberOfWins), Toast.LENGTH_SHORT).show();
+            } else {
+                this.numberOfLosses += 1;
+            }
+        }
+
+        winCount.setText(Integer.toString(numberOfWins));
+        lossCount.setText(Integer.toString(numberOfLosses));
+
     }
 }
 

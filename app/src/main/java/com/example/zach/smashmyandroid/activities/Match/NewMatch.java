@@ -145,7 +145,7 @@ public class NewMatch extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (winner.getId() != loser.getId()) {
-                    Match m = new Match(tournament.getId(), winner.getId(), loser.getId());
+                    Match m = new Match(tournament.getId(), winner.getId(), winner.getSmashName(), loser.getId(), loser.getSmashName());
 
                     //Intent i = new Intent(NewMatch.this, TournamentDetails.class).putExtra("match", m).putExtra("winner", winner).putExtra("loser", loser);
 

@@ -5,6 +5,7 @@ import com.example.zach.smashmyandroid.database.local.models.Player;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 /**
  * Created by Zach on 3/21/2018.

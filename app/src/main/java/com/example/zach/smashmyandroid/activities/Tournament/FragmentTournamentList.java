@@ -1,13 +1,19 @@
 package com.example.zach.smashmyandroid.activities.Tournament;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,9 +28,12 @@ import com.example.zach.smashmyandroid.database.local.models.Tournament;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -115,6 +124,73 @@ public class FragmentTournamentList extends Fragment {
         tournamentList.clear();
         tournamentList.addAll(tournaments);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        menu.setHeaderTitle("Select Action:");
+
+        menu.add(Menu.NONE, 0, menu.NONE, "DELETE");
+    }
+
+    // Selecting UPDATE or DELETE fires the appropriate event
+    // UPDATE currently only allows changing of first name
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        final Tournament t = tournamentList.get(info.position);
+        switch (item.getItemId()) {
+            case 0: // Delete Match
+            {
+                new AlertDialog.Builder(getActivity())
+                        .setMessage("Do you want to delete "+ t.getName())
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteTournament(t);
+                            }
+                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+            }
+            break;
+        }
+        return true;
+    }
+
+    private void deleteTournament(final Tournament t) {
+        Disposable disposable = io.reactivex.Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> e) throws Exception {
+                tournamentRepository.delete(t);
+                e.onComplete();
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Consumer() {
+                               @Override
+                               public void accept(Object o) throws Exception {
+
+                               }
+                           }, new Consumer<Throwable>() {
+                               @Override
+                               public void accept(Throwable throwable) throws Exception {
+                                   Toast.makeText(getActivity(), "" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                               }
+                           },
+                        new Action() {
+                            @Override
+                            public void run() throws Exception {
+                                loadData();
+                            }
+                        }
+                );
+        compositeDisposable.add(disposable);
     }
 
     @Nullable
