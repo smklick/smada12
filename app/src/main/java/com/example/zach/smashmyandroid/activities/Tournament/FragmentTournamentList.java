@@ -90,7 +90,9 @@ public class FragmentTournamentList extends Fragment {
                 }
 
                 TextView tournamentName = convertView.findViewById(R.id.tournamentName);
+                TextView tournamentDate = convertView.findViewById(R.id.tournamentDate);
                 tournamentName.setText(t.getName());
+                tournamentDate.setText("Tournament ID: " + Integer.toString(t.getId()));
 
 
                 return convertView;

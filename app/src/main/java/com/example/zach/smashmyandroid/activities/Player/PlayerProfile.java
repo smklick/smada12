@@ -96,9 +96,11 @@ public class PlayerProfile extends AppCompatActivity {
                 }
                 TextView winner = convertView.findViewById(R.id.winnerName);
                 TextView loser = convertView.findViewById(R.id.loserName);
+                TextView matchId = convertView.findViewById(R.id.matchId);
 
                 winner.setText(m.getWinnerName());
                 loser.setText(m.getLoserName());
+                matchId.setText("Match ID: " + Integer.toString(m.getId()));
                 return convertView;
             }
         };
